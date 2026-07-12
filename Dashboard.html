@@ -1062,6 +1062,23 @@
                 </select>
               </div>
 
+              <div id="internationalFields" style="display:none;" class="full-width">
+              <div class="transfer-grid">
+              <div class="field-group full-width">
+                <label><i class="fas fa-barcode" style="margin-right:6px;font-size:10px;"></i> IBAN</label>
+                <input type="text" id="iban" placeholder="e.g. GB29NWBK60161331926819" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+              </div>
+              <div class="field-group">
+                <label><i class="fas fa-building-columns" style="margin-right:6px;font-size:10px;"></i> SWIFT / BIC Code</label>
+                <input type="text" id="swiftCode" placeholder="e.g. HBUKGB4B" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+              </div>
+              <div class="field-group">
+                <label><i class="fas fa-hashtag" style="margin-right:6px;font-size:10px;"></i> Account Number</label>
+                <input type="text" id="accountNumber" placeholder="Enter account number">
+              </div>
+              </div>
+              </div>
+
               <!-- Other Bank Name (hidden by default) -->
               <div class="field-group full-width other-bank-row" id="otherBankRow">
                 <label><i class="fas fa-edit" style="margin-right:6px;font-size:10px;"></i> Specify Bank Name</label>
@@ -1140,6 +1157,7 @@
         label = '',
         note = '';
 
+      document.getElementById('internationalFields').style.display = type==='international' ? 'block':'none';
       if (type === 'domestic') {
         fee = 0;
         label = 'Domestic Transfer Fee';
