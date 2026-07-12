@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poholing · next‑gen banking</title>
+  <!-- Font Awesome 6 (free) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ----- reset & base ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0b1120;
+      color: #e8edf5;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ----- glass + gradient helpers ----- */
+    .glass-heavy {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* ----- top bar (minimal, dark) ----- */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 48px;
+      font-size: 13px;
+      color: #94a3b8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(11, 17, 32, 0.8);
+      backdrop-filter: blur(6px);
+    }
+    .top-bar .left a {
+      margin-right: 32px;
+      color: #94a3b8;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .top-bar .left a:hover { color: #c4b5fd; }
+    .top-bar .right {
+      display: flex;
+      gap: 28px;
+    }
+    .top-bar .right span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.7;
+    }
+
+    /* ----- main nav (glass + distinct) ----- */
+    .main-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 48px;
+      background: rgba(11, 17, 32, 0.6);
+      backdrop-filter: blur(14px) saturate(180%);
+      -webkit-backdrop-filter: blur(14px) saturate(180%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .main-nav.scrolled {
+      background: rgba(11, 17, 32, 0.92);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .logo .badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(167, 139, 250, 0.2);
+      color: #a78bfa;
+      padding: 2px 10px;
+      border-radius: 40px;
+      letter-spacing: 1px;
+    }
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+      transform: rotate(-4deg);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .logo:hover .logo-mark { transform: rotate(4deg) scale(1.06); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav-links li {
+      font-size: 15px;
+      font-weight: 500;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links li::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+    .nav-links li:hover { color: #e2e8f0; }
+    .nav-links li:hover::after { width: 100%; }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-right i {
+      font-size: 18px;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: color 0.2s, transform 0.2s;
+    }
+    .nav-right i:hover { color: #c4b5fd; transform: scale(1.08); }
+
+    .login-btn {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      padding: 10px 28px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+    }
+    .login-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 28px rgba(124, 58, 237, 0.40);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #e2e8f0;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mobile-menu { display: none; }
+
+    /* ----- hero (gradient + glass) ----- */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      padding: 60px 48px 80px;
+      min-height: 560px;
+      background: radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.15), transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(96, 165, 250, 0.10), transparent 50%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+    .hero-text {
+      flex: 1;
+    }
+    .hero-text .tag {
+      display: inline-block;
+      background: rgba(167, 139, 250, 0.15);
+      color: #a78bfa;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 18px;
+      border-radius: 60px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+    .hero-text h1 {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 20px;
+    }
+    .hero-text h1 span { color: #a78bfa; }
+    .hero-text p {
+      font-size: 18px;
+      color: #94a3b8;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.30);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(124, 58, 237, 0.45);
+    }
+    .btn-outline {
+      background: transparent;
+      color: #e2e8f0;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(167, 139, 250, 0.4);
+      transform: translateY(-2px);
+    }
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 40px;
+    }
+    .hero-stats div {
+      text-align: left;
+    }
+    .hero-stats .num {
+      font-size: 28px;
+      font-weight: 800;
+      color: #e2e8f0;
+    }
+    .hero-stats .label {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .hero-visual {
+      flex: 1;
+      min-height: 400px;
+      background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.06));
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-visual .floating-card {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 28px;
+      padding: 32px 40px;
+      text-align: center;
+      max-width: 320px;
+      transform: rotate(-2deg);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .hero-visual .floating-card i {
+      font-size: 40px;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-visual .floating-card h3 {
+      font-size: 22px;
+      margin: 12px 0 4px;
+    }
+    .hero-visual .floating-card p {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .hero-visual .floating-card .chip {
+      display: inline-block;
+      background: rgba(167, 139, 250, 0.15);
+      color: #a78bfa;
+      padding: 4px 16px;
+      border-radius: 40px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 12px;
+    }
+
+    /* ----- feature grid (glass) ----- */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      padding: 60px 48px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 28px;
+      padding: 32px 24px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background 0.3s, border-color 0.3s;
+      text-align: center;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(167, 139, 250, 0.15);
+    }
+    .feature-card .icon-wrap {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(96, 165, 250, 0.10));
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #a78bfa;
+      transition: transform 0.3s;
+    }
+    .feature-card:hover .icon-wrap { transform: scale(1.08) rotate(-4deg); }
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* ----- content section (dark glass) ----- */
+    .content-section {
+      display: flex;
+      gap: 36px;
+      padding: 40px 48px 70px;
+      max-width: 1440px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+    .products-col { flex: 1; }
+    .products-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+    .products-header h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .products-header h2 span { color: #a78bfa; }
+    .view-all {
+      color: #a78bfa;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.25s;
+    }
+    .view-all:hover { gap: 14px; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .product-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 24px;
+      padding: 28px 22px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  background 0.3s, border-color 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(167, 139, 250, 0.12);
+    }
+    .product-card .p-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.08));
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #a78bfa;
+      margin-bottom: 16px;
+      transition: transform 0.3s;
+    }
+    .product-card:hover .p-icon { transform: scale(1.10) rotate(-4deg); }
+    .product-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .product-card p {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .product-card a {
+      color: #a78bfa;
+      font-weight: 600;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.25s;
+    }
+    .product-card a:hover { gap: 14px; }
+
+    /* ----- banking card (gradient glass) ----- */
+    .banking-col {
+      flex: 0 0 340px;
+      background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.06));
+      backdrop-filter: blur(18px) saturate(180%);
+      -webkit-backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 32px;
+      padding: 36px 28px;
+      color: #e2e8f0;
+      align-self: stretch;
+      transition: transform 0.3s, box-shadow 0.3s;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+    }
+    .banking-col:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+    }
+    .banking-col h3 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .banking-col h3 i { color: #a78bfa; }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .input-group i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #64748b;
+      font-size: 16px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 14px 16px 14px 48px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.25);
+      color: #e2e8f0;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .input-group input:focus {
+      border-color: #a78bfa;
+      background: rgba(0, 0, 0, 0.35);
+    }
+    .input-group input::placeholder { color: #64748b; }
+    .input-group .eye {
+      left: auto;
+      right: 16px;
+      cursor: pointer;
+      color: #64748b;
+    }
+    .input-group.has-error input {
+      border-color: #f87171;
+      background: rgba(248, 113, 113, 0.08);
+    }
+    .input-group.has-error i:not(.eye) { color: #f87171; }
+
+    .field-error {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      color: #fca5a5;
+      font-size: 12px;
+      font-weight: 600;
+      margin: 8px 6px 14px;
+    }
+    .field-error i { font-size: 14px; }
+    .input-group.has-error + .field-error { display: flex; }
+
+    .form-alert {
+      display: none;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(248, 113, 113, 0.08);
+      border: 1px solid rgba(248, 113, 113, 0.15);
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #fca5a5;
+    }
+    .form-alert.show { display: flex; }
+    .form-alert i { font-size: 18px; margin-top: 1px; }
+
+    .remember-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: #94a3b8;
+      margin: 20px 0 22px;
+    }
+    .remember-row label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .remember-row a { color: #94a3b8; transition: color 0.2s; }
+    .remember-row a:hover { color: #c4b5fd; }
+
+    .btn-login-full {
+      width: 100%;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      color: #fff;
+      border: none;
+      padding: 16px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.25);
+    }
+    .btn-login-full:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 36px rgba(124, 58, 237, 0.35);
+    }
+    .btn-login-full:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      display: none;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .new-user {
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 14px;
+    }
+    .btn-register {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 14px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .btn-register:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* ----- trust bar (dark glass) ----- */
+    .trust-bar {
+      display: flex;
+      justify-content: center;
+      gap: 60px;
+      padding: 24px 48px;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      background: rgba(11, 17, 32, 0.5);
+      backdrop-filter: blur(8px);
+      flex-wrap: wrap;
+      margin: 0 20px 20px;
+      border-radius: 60px;
+    }
+    .trust-bar span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+    .trust-bar span i { color: #a78bfa; font-size: 16px; }
+
+    /* ----- reveal animations ----- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.reveal-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left { transform: translateX(-40px); }
+    .reveal-left.reveal-visible { transform: translateX(0); }
+    .reveal-right { transform: translateX(40px); }
+    .reveal-right.reveal-visible { transform: translateX(0); }
+
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal-stagger.reveal-visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-stagger.reveal-visible > *:nth-child(1) { transition-delay: 0.05s; }
+    .reveal-stagger.reveal-visible > *:nth-child(2) { transition-delay: 0.15s; }
+    .reveal-stagger.reveal-visible > *:nth-child(3) { transition-delay: 0.25s; }
+    .reveal-stagger.reveal-visible > *:nth-child(4) { transition-delay: 0.35s; }
+
+    /* ----- responsive ----- */
+    @media (max-width: 1100px) {
+      .content-section { flex-direction: column; }
+      .banking-col { flex: 1; width: 100%; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { flex-direction: column; padding: 40px 24px 60px; }
+      .hero-text h1 { font-size: 38px; }
+    }
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .menu-toggle { display: block; }
+      .mobile-menu.open {
+        display: flex;
+        flex-direction: column;
+        background: rgba(11, 17, 32, 0.95);
+        backdrop-filter: blur(12px);
+        padding: 16px 24px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .mobile-menu.open li {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        font-size: 15px;
+        font-weight: 500;
+        color: #cbd5e1;
+      }
+      .mobile-menu.open li:last-child { border-bottom: none; }
+    }
+    @media (max-width: 700px) {
+      .top-bar { padding: 8px 16px; flex-wrap: wrap; gap: 8px; }
+      .top-bar .left a { margin-right: 16px; font-size: 12px; }
+      .top-bar .right { gap: 14px; flex-wrap: wrap; }
+      .main-nav { padding: 12px 16px; }
+      .logo { font-size: 18px; }
+      .logo-mark { width: 30px; height: 30px; font-size: 14px; }
+      .login-btn { padding: 8px 18px; font-size: 13px; }
+      .login-btn span { display: none; }
+
+      .hero { padding: 32px 16px 40px; }
+      .hero-text h1 { font-size: 28px; }
+      .hero-text p { font-size: 15px; }
+      .hero-stats { gap: 24px; flex-wrap: wrap; }
+      .hero-stats .num { font-size: 22px; }
+      .hero-visual { min-height: 240px; }
+      .hero-visual .floating-card { padding: 24px 20px; }
+
+      .feature-grid { grid-template-columns: 1fr; padding: 32px 16px; gap: 16px; }
+      .content-section { padding: 24px 16px 40px; gap: 20px; }
+      .product-grid { grid-template-columns: 1fr; gap: 14px; }
+      .banking-col { padding: 24px 20px; }
+
+      .trust-bar { gap: 16px; flex-direction: column; align-items: flex-start; padding: 20px 16px; margin: 0 12px 16px; border-radius: 32px; }
+    }
+    @media (max-width: 380px) {
+      .hero-text h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- top bar -->
+  <div class="top-bar">
+    <div class="left">
+      <a href="#">Personal</a>
+      <a href="#">Business</a>
+      <a href="#">About</a>
+      <a href="#">Investors</a>
+    </div>
+    <div class="right">
+      <span><i class="fas fa-map-marker-alt"></i> Branches</span>
+      <span><i class="fas fa-headset"></i> Support</span>
+      <span><i class="fas fa-phone-alt"></i> +44 20 7946 0580</span>
+    </div>
+  </div>
+
+  <!-- main nav -->
+  <nav class="main-nav" id="mainNav">
+    <div class="logo">
+      <div class="logo-mark">P</div>
+      POHOLING <span class="badge">PLC</span>
+    </div>
+    <ul class="nav-links">
+      <li>Accounts ▾</li>
+      <li>Loans ▾</li>
+      <li>Cards ▾</li>
+      <li>Investments ▾</li>
+      <li>Digital ▾</li>
+      <li>More ▾</li>
+    </ul>
+    <div class="nav-right">
+      <i class="fas fa-search"></i>
+      <button class="login-btn" onclick="document.querySelector('.banking-col').scrollIntoView({behavior:'smooth'});">
+        <i class="fas fa-lock"></i> <span>Login</span>
+      </button>
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+  <ul class="nav-links mobile-menu" id="mobileMenu">
+    <li>Accounts ▾</li>
+    <li>Loans ▾</li>
+    <li>Cards ▾</li>
+    <li>Investments ▾</li>
+    <li>Digital ▾</li>
+    <li>More ▾</li>
+  </ul>
+
+  <!-- hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="tag"><i class="fas fa-sparkles" style="margin-right:6px;"></i> Next‑gen banking</div>
+      <h1>Money moves <br><span>at the speed of life</span></h1>
+      <p>Experience a new kind of banking — secure, intuitive, and built for the way you live today.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary"><i class="fas fa-rocket"></i> Get Started</button>
+        <button class="btn-outline"><i class="fas fa-play-circle"></i> See how</button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="num">4.8M+</div><div class="label">Active users</div></div>
+        <div><div class="num">£12B</div><div class="label">Transactions</div></div>
+        <div><div class="num">98%</div><div class="label">Satisfaction</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-card">
+        <i class="fas fa-bolt"></i>
+        <h3>Instant Access</h3>
+        <p>Your money, always at your fingertips</p>
+        <div class="chip"><i class="fas fa-check-circle"></i> 24/7 available</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- feature grid -->
+  <div class="feature-grid reveal-stagger reveal">
+    <div class="feature-card">
+      <div class="icon-wrap"><i class="fas fa-shield-alt"></i></div>
+      <h3>Bank‑grade security</h3>
+      <p>Enterprise‑level encryption and real‑time monitoring keep your data safe.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrap"><i class="fas fa-globe-americas"></i></div>
+      <h3>Global reach</h3>
+      <p>Send and receive money in over 40 currencies with low fees.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrap"><i class="fas fa-chart-pie"></i></div>
+      <h3>Smart insights</h3>
+      <p>Get personalised spending insights and savings recommendations.</p>
+    </div>
+    <div class="feature-card">
+      <div class="icon-wrap"><i class="fas fa-clock"></i></div>
+      <h3>24/7 support</h3>
+      <p>Real humans, ready to help you anytime — day or night.</p>
+    </div>
+  </div>
+
+  <!-- content -->
+  <section class="content-section">
+    <div class="products-col">
+      <div class="products-header reveal">
+        <h2>Your <span>financial</span> toolkit</h2>
+        <a href="#" class="view-all">All products <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="product-grid reveal-stagger reveal">
+        <div class="product-card">
+          <div class="p-icon"><i class="fas fa-piggy-bank"></i></div>
+          <h3>Savings</h3>
+          <p>Build your future with competitive rates and flexible terms.</p>
+          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="product-card">
+          <div class="p-icon"><i class="fas fa-home"></i></div>
+          <h3>Mortgages</h3>
+          <p>Smart home financing tailored to your lifestyle.</p>
+          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="product-card">
+          <div class="p-icon"><i class="fas fa-credit-card"></i></div>
+          <h3>Credit Cards</h3>
+          <p>Rewards, cashback, and zero foreign transaction fees.</p>
+          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="product-card">
+          <div class="p-icon"><i class="fas fa-chart-line"></i></div>
+          <h3>Investments</h3>
+          <p>Grow your wealth with expert‑guided portfolios.</p>
+          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- banking card -->
+    <div class="banking-col reveal reveal-right">
+      <h3><i class="fas fa-university"></i> Online Banking</h3>
+
+      <div class="form-alert" id="formAlert">
+        <i class="fas fa-exclamation-circle"></i>
+        <span id="formAlertText">Please fill in your username and password.</span>
+      </div>
+
+      <div class="input-group" id="usernameGroup">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username" placeholder="Username" autocomplete="username">
+      </div>
+      <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your username.</div>
+
+      <div class="input-group" id="passwordGroup">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+        <i class="fas fa-eye eye" id="eyeIcon" onclick="togglePassword()"></i>
+      </div>
+      <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your password.</div>
+
+      <div class="remember-row">
+        <label><input type="checkbox" checked style="width:auto;"> Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button class="btn-login-full" id="loginBtn" onclick="login()">
+        <span id="loginBtnText">Log in</span>
+        <span class="spinner" id="loginSpinner"></span>
+      </button>
+      <div class="new-user">First time with Poholing?</div>
+      <button class="btn-register">Create account</button>
+    </div>
+  </section>
+
+  <!-- trust bar -->
+  <div class="trust-bar reveal-stagger reveal">
+    <span><i class="fas fa-shield-alt"></i> Your security is our priority</span>
+    <span><i class="fas fa-users"></i> Trusted by millions</span>
+    <span><i class="fas fa-trophy"></i> Award‑winning digital banking</span>
+    <span><i class="fas fa-check-circle"></i> FCA regulated</span>
+  </div>
+
+  <script>
+    // toggle password visibility
+    function togglePassword() {
+      const pw = document.getElementById('password');
+      const icon = document.getElementById('eyeIcon');
+      if (pw.type === 'password') {
+        pw.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        pw.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    }
+
+    function clearErrors() {
+      document.getElementById('usernameGroup').classList.remove('has-error');
+      document.getElementById('passwordGroup').classList.remove('has-error');
+      document.getElementById('formAlert').classList.remove('show');
+    }
+
+    function login() {
+      const usernameEl = document.getElementById('username');
+      const passwordEl = document.getElementById('password');
+      const username = usernameEl.value.trim();
+      const password = passwordEl.value.trim();
+
+      clearErrors();
+      let hasError = false;
+      if (username === '') {
+        document.getElementById('usernameGroup').classList.add('has-error');
+        hasError = true;
+      }
+      if (password === '') {
+        document.getElementById('passwordGroup').classList.add('has-error');
+        hasError = true;
+      }
+
+      if (hasError) {
+        const alertBox = document.getElementById('formAlert');
+        const alertText = document.getElementById('formAlertText');
+        alertText.textContent = (username === '' && password === '')
+          ? 'Please fill in your username and password to continue.'
+          : (username === '' ? 'Please enter your username.' : 'Please enter your password.');
+        alertBox.classList.add('show');
+        return;
+      }
+
+      const btn = document.getElementById('loginBtn');
+      const btnText = document.getElementById('loginBtnText');
+      const spinner = document.getElementById('loginSpinner');
+      btn.disabled = true;
+      btnText.textContent = 'Signing in...';
+      spinner.style.display = 'inline-block';
+
+      setTimeout(() => {
+        window.location.href = 'Dashboard.html';
+      }, 700);
+    }
+
+    // clear error on input
+    document.getElementById('username').addEventListener('input', function () {
+      if (this.value.trim() !== '') document.getElementById('usernameGroup').classList.remove('has-error');
+    });
+    document.getElementById('password').addEventListener('input', function () {
+      if (this.value.trim() !== '') document.getElementById('passwordGroup').classList.remove('has-error');
+    });
+
+    // enter key
+    ['username', 'password'].forEach(id => {
+      document.getElementById(id).addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') login();
+      });
+    });
+
+    // mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    // nav scroll shadow
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 10) mainNav.classList.add('scrolled');
+      else mainNav.classList.remove('scrolled');
+    });
+
+    // scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-visible');
+        } else {
+          entry.target.classList.remove('reveal-visible');
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
