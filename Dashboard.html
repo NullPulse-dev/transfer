@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Poholing PLC · Client Dashboard</title>
+  <title>Santander · Client Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -72,7 +72,7 @@
     .brand-mark {
       width: 40px;
       height: 40px;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background: #ec0000;
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -124,19 +124,19 @@
       transition: color 0.25s;
     }
     .nav-item:hover {
-      background: rgba(124, 58, 237, 0.08);
+      background: rgba(236, 0, 0, 0.08);
       color: #e8edf5;
     }
     .nav-item:hover i {
-      color: #a78bfa;
+      color: #ec0000;
     }
     .nav-item.active {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(79, 70, 229, 0.08));
+      background: linear-gradient(135deg, rgba(236, 0, 0, 0.15), rgba(200, 0, 0, 0.08));
       color: #fff;
-      border: 1px solid rgba(124, 58, 237, 0.15);
+      border: 1px solid rgba(236, 0, 0, 0.15);
     }
     .nav-item.active i {
-      color: #a78bfa;
+      color: #ec0000;
     }
 
     .sidebar-footer {
@@ -153,7 +153,7 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background: linear-gradient(135deg, #ec0000, #b30000);
       color: #fff;
       display: flex;
       align-items: center;
@@ -172,8 +172,8 @@
     /* ----- main area ----- */
     .main {
       padding: 36px 48px 60px;
-      background: radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.04), transparent 60%),
-                  radial-gradient(ellipse at 20% 80%, rgba(79, 70, 229, 0.03), transparent 50%);
+      background: radial-gradient(ellipse at 80% 20%, rgba(236, 0, 0, 0.04), transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(200, 0, 0, 0.03), transparent 50%);
     }
 
     .topbar {
@@ -212,15 +212,138 @@
       cursor: pointer;
     }
     .icon-btn:hover {
-      background: rgba(124, 58, 237, 0.08);
-      border-color: rgba(124, 58, 237, 0.15);
-      color: #a78bfa;
+      background: rgba(236, 0, 0, 0.08);
+      border-color: rgba(236, 0, 0, 0.15);
+      color: #ec0000;
     }
     .icon-btn i {
       font-size: 16px;
     }
 
-    /* ----- balance row (glass cards) ----- */
+    /* ----- RESTRICTION ALERT (NEW) ----- */
+    .restriction-alert {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(236, 0, 0, 0.05));
+      border: 1px solid rgba(251, 191, 36, 0.15);
+      border-radius: 20px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
+    }
+    .restriction-alert:hover {
+      border-color: rgba(251, 191, 36, 0.25);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(236, 0, 0, 0.08));
+    }
+    .restriction-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(251, 191, 36, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(251, 191, 36, 0.1);
+    }
+    .restriction-icon i {
+      font-size: 26px;
+      color: #fbbf24;
+    }
+    .restriction-content {
+      flex: 1;
+      min-width: 200px;
+    }
+    .restriction-content h3 {
+      font-family: 'Source Serif 4', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #e8edf5;
+      margin-bottom: 4px;
+    }
+    .restriction-content .desc {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+    .restriction-content .desc strong {
+      color: #fbbf24;
+    }
+    .restriction-progress {
+      flex: 1;
+      min-width: 180px;
+    }
+    .restriction-progress .labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .restriction-progress .labels span:last-child {
+      color: #fbbf24;
+      font-weight: 600;
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 40px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 65%;
+      background: linear-gradient(90deg, #fbbf24, #ec0000);
+      border-radius: 40px;
+      transition: width 0.8s ease;
+    }
+    .restriction-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn-pay-restriction {
+      background: linear-gradient(135deg, #ec0000, #b30000);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(236, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .btn-pay-restriction:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(236, 0, 0, 0.35);
+    }
+    .btn-pay-restriction i {
+      font-size: 14px;
+    }
+    .btn-dismiss-restriction {
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      padding: 14px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .btn-dismiss-restriction:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #e8edf5;
+    }
+
+    /* ----- balance row ----- */
     .balance-row {
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr;
@@ -238,13 +361,13 @@
     }
     .card:hover {
       background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(124, 58, 237, 0.08);
+      border-color: rgba(236, 0, 0, 0.08);
       transform: translateY(-2px);
     }
 
     .primary-balance {
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(79, 70, 229, 0.06));
-      border-color: rgba(124, 58, 237, 0.08);
+      background: linear-gradient(135deg, rgba(236, 0, 0, 0.10), rgba(180, 0, 0, 0.05));
+      border-color: rgba(236, 0, 0, 0.08);
       position: relative;
       overflow: hidden;
     }
@@ -256,7 +379,7 @@
       width: 280px;
       height: 280px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(124, 58, 237, 0.08), transparent 70%);
+      background: radial-gradient(circle, rgba(236, 0, 0, 0.06), transparent 70%);
     }
     .primary-balance .label {
       font-size: 12px;
@@ -356,11 +479,11 @@
     .section-title a {
       font-size: 12px;
       font-weight: 600;
-      color: #a78bfa;
+      color: #ec0000;
       transition: color 0.2s;
     }
     .section-title a:hover {
-      color: #c4b5fd;
+      color: #ff4444;
     }
 
     /* ----- transactions ----- */
@@ -453,15 +576,15 @@
       align-items: baseline;
       padding-top: 16px;
       margin-top: 8px;
-      border-top: 2px solid rgba(124, 58, 237, 0.15);
+      border-top: 2px solid rgba(236, 0, 0, 0.15);
     }
     .invest-total .v {
       font-size: 22px;
       font-weight: 700;
-      color: #a78bfa;
+      color: #ec0000;
     }
 
-    /* ===== TRANSFER PANEL - REDESIGNED ===== */
+    /* ----- transfer panel ----- */
     .transfer-wrapper {
       display: flex;
       flex-direction: column;
@@ -480,7 +603,7 @@
 
     .transfer-main-card:hover {
       background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(124, 58, 237, 0.08);
+      border-color: rgba(236, 0, 0, 0.08);
     }
 
     .transfer-header {
@@ -499,12 +622,12 @@
     .transfer-header .badge-new {
       font-size: 10px;
       font-weight: 700;
-      color: #a78bfa;
-      background: rgba(124, 58, 237, 0.12);
+      color: #ec0000;
+      background: rgba(236, 0, 0, 0.12);
       padding: 4px 14px;
       border-radius: 40px;
       letter-spacing: 0.5px;
-      border: 1px solid rgba(124, 58, 237, 0.08);
+      border: 1px solid rgba(236, 0, 0, 0.08);
     }
 
     .transfer-grid {
@@ -552,7 +675,7 @@
 
     .field-group select:focus,
     .field-group input:focus {
-      border-color: rgba(124, 58, 237, 0.3);
+      border-color: rgba(236, 0, 0, 0.3);
       background: rgba(255, 255, 255, 0.04);
     }
 
@@ -576,7 +699,6 @@
       font-weight: 600;
     }
 
-    /* Fee breakdown - redesigned */
     .fee-modern {
       background: rgba(255, 255, 255, 0.02);
       border: 1px solid rgba(255, 255, 255, 0.04);
@@ -618,7 +740,7 @@
     }
 
     .fee-modern .fee-row.total .value {
-      color: #a78bfa;
+      color: #ec0000;
     }
 
     .fee-note-modern {
@@ -636,7 +758,7 @@
 
     .btn-transfer {
       width: 100%;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background: linear-gradient(135deg, #ec0000, #b30000);
       color: #fff;
       border: none;
       padding: 15px;
@@ -644,7 +766,7 @@
       font-weight: 700;
       font-size: 15px;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.2);
+      box-shadow: 0 4px 20px rgba(236, 0, 0, 0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -653,14 +775,13 @@
 
     .btn-transfer:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(124, 58, 237, 0.35);
+      box-shadow: 0 8px 32px rgba(236, 0, 0, 0.35);
     }
 
     .btn-transfer i {
       font-size: 14px;
     }
 
-    /* Status card - redesigned */
     .status-card-modern {
       background: rgba(255, 255, 255, 0.03);
       backdrop-filter: blur(12px);
@@ -673,7 +794,7 @@
 
     .status-card-modern:hover {
       background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(124, 58, 237, 0.08);
+      border-color: rgba(236, 0, 0, 0.08);
     }
 
     .status-banner-modern {
@@ -745,7 +866,6 @@
       text-align: right;
     }
 
-    /* Field select - modern */
     .field-select-modern {
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237a8aa8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -755,7 +875,6 @@
       cursor: pointer;
     }
 
-    /* Other bank row */
     .other-bank-row {
       display: none;
       grid-column: 1 / -1;
@@ -788,6 +907,17 @@
       .transfer-grid .full-width {
         grid-column: 1;
       }
+      .restriction-alert {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+      .restriction-icon {
+        margin: 0 auto;
+      }
+      .restriction-actions {
+        justify-content: center;
+      }
     }
     @media (max-width: 700px) {
       .topbar {
@@ -814,6 +944,12 @@
         align-items: flex-start;
         gap: 6px;
       }
+      .restriction-alert {
+        padding: 18px 16px;
+      }
+      .restriction-content h3 {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
@@ -824,9 +960,9 @@
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="brand">
-        <div class="brand-mark">P</div>
+        <div class="brand-mark">S</div>
         <div>
-          <div class="brand-name">Poholing</div>
+          <div class="brand-name">Santander</div>
           <span class="brand-tag">PLC · PRIVATE CLIENT</span>
         </div>
       </div>
@@ -854,10 +990,10 @@
       </div>
 
       <div class="sidebar-footer">
-        <div class="avatar-dot">LB</div>
+        <div class="avatar-dot">CJ</div>
         <div>
-          <span>Louis Briggs</span>
-          Client ID · PB-30841
+          <span>Chad Jacobs</span>
+          Client ID · PB-77421
         </div>
       </div>
     </aside>
@@ -866,7 +1002,8 @@
     <main class="main">
       <div class="topbar">
         <div>
-          <h1 id="greeting">Welcome, Louis</h1>
+          <h1 id="greeting">Welcome, Chad</h1>
+          <div class="sub">Account overview · Last login: Today, 09:42 AM</div>
         </div>
         <div class="topbar-actions">
           <div class="icon-btn"><i class="fas fa-bell"></i></div>
@@ -874,29 +1011,63 @@
         </div>
       </div>
 
+      <!-- ⚠️ RESTRICTION ALERT (NEW) -->
+      <div class="restriction-alert" id="restrictionAlert">
+        <div class="restriction-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="restriction-content">
+          <h3>⚠️ Withdrawal Restriction Active</h3>
+          <p class="desc">
+            To ensure account security, a pre‑approval amount of <strong>$100,000.00</strong> is required before any withdrawals can be processed.
+            <br>
+            <span style="color:#94a3b8;font-size:13px;">
+              Paid: <strong style="color:#34d399;">$65,000.00</strong> &nbsp;·&nbsp; Remaining: <strong style="color:#fbbf24;">$35,000.00</strong>
+            </span>
+          </p>
+        </div>
+        <div class="restriction-progress">
+          <div class="labels">
+            <span>Progress</span>
+            <span>65%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:65%;"></div>
+          </div>
+        </div>
+        <div class="restriction-actions">
+          <button class="btn-pay-restriction" onclick="payRestriction()">
+            <i class="fas fa-lock-open"></i> Pay Remaining $35,000
+          </button>
+          <button class="btn-dismiss-restriction" onclick="dismissRestriction()">
+            Dismiss
+          </button>
+        </div>
+      </div>
+
       <!-- Balance row -->
       <div class="balance-row">
         <div class="card primary-balance">
           <div class="label">TOTAL AVAILABLE BALANCE</div>
-          <div class="amount">$<span id="bal-int">2,400,000</span><span class="cents">.00</span></div>
+          <div class="amount">$<span id="bal-int">2,500,000</span><span class="cents">.00</span></div>
           <div class="meta">
-            <span>Current: <b>$1,800,000.00</b></span>
+            <span>Current: <b>$1,900,000.00</b></span>
             <span>Savings: <b>$600,000.00</b></span>
           </div>
           <div class="acct-name">
             <span>Account holder</span>
-            <b>Louis Briggs</b>
+            <b>Chad Jacobs</b>
           </div>
         </div>
         <div class="card mini-card">
           <div class="label">Income (30 days)</div>
-          <div class="amount mono">$280,000.00</div>
-          <span class="delta up"><i class="fas fa-arrow-up"></i> 12.4% vs last month</span>
+          <div class="amount mono">$320,000.00</div>
+          <span class="delta up"><i class="fas fa-arrow-up"></i> 8.2% vs last month</span>
         </div>
         <div class="card mini-card">
           <div class="label">Spending (30 days)</div>
-          <div class="amount mono">$124,000.00</div>
-          <span class="delta down"><i class="fas fa-arrow-down"></i> 4.2% vs last month</span>
+          <div class="amount mono">$0.00</div>
+          <span class="delta down"><i class="fas fa-arrow-down"></i> 0.0% vs last month</span>
         </div>
       </div>
 
@@ -913,42 +1084,42 @@
             <div class="tx-row">
               <div class="tx-icon in"><i class="fas fa-arrow-up"></i></div>
               <div class="tx-info">
-                <div class="name">Salary — Clearwater Holdings Ltd</div>
-                <div class="meta">6 Jul 2026 · Direct deposit</div>
+                <div class="name">Salary — Jacobs Holdings Ltd</div>
+                <div class="meta">6 feb 2026 · Direct deposit</div>
               </div>
-              <div class="tx-amount in">+$140,000.00</div>
+              <div class="tx-amount in">+$180,000.00</div>
             </div>
             <div class="tx-row">
               <div class="tx-icon out"><i class="fas fa-arrow-down"></i></div>
               <div class="tx-info">
-                <div class="name">Mortgage payment — Home Loan #4471</div>
-                <div class="meta">5 Jul 2026 · Scheduled transfer</div>
+                <div class="name">Mortgage payment — Home Loan #8823</div>
+                <div class="meta">5 feb 2026 · Scheduled transfer</div>
               </div>
-              <div class="tx-amount out">-$8,500.00</div>
+              <div class="tx-amount out">-$9,200.00</div>
             </div>
             <div class="tx-row">
               <div class="tx-icon out"><i class="fas fa-credit-card"></i></div>
               <div class="tx-info">
-                <div class="name">Card purchase — Halden &amp; Co. Interiors</div>
-                <div class="meta">4 Jul 2026 · Debit card ····4471</div>
+                <div class="name">Card purchase — Whitfield &amp; Co.</div>
+                <div class="meta">4 feb 2026 · Debit card ····8823</div>
               </div>
-              <div class="tx-amount out">-$12,800.00</div>
+              <div class="tx-amount out">-$14,500.00</div>
             </div>
             <div class="tx-row">
               <div class="tx-icon in"><i class="fas fa-arrow-up"></i></div>
               <div class="tx-info">
                 <div class="name">Dividend — Meridian Growth Fund</div>
-                <div class="meta">2 Jul 2026 · Investment income</div>
+                <div class="meta">2 feb 2026 · Investment income</div>
               </div>
-              <div class="tx-amount in">+$6,200.00</div>
+              <div class="tx-amount in">+$7,800.00</div>
             </div>
             <div class="tx-row">
               <div class="tx-icon out"><i class="fas fa-credit-card"></i></div>
               <div class="tx-info">
                 <div class="name">Card purchase — Norrland Grocers</div>
-                <div class="meta">1 Jul 2026 · Debit card ····4471</div>
+                <div class="meta">1 feb 2026 · Debit card ····8823</div>
               </div>
-              <div class="tx-amount out">-$2,340.00</div>
+              <div class="tx-amount out">-$2,940.00</div>
             </div>
           </div>
 
@@ -964,8 +1135,8 @@
                 <div class="invest-sub">Equity · Moderate risk</div>
               </div>
               <div class="invest-val">
-                <div class="v mono">$780,000.00</div>
-                <div class="p" style="color:#34d399;">+12.8% YTD</div>
+                <div class="v mono">$820,000.00</div>
+                <div class="p" style="color:#34d399;">+13.2% YTD</div>
               </div>
             </div>
             <div class="invest-item">
@@ -974,8 +1145,8 @@
                 <div class="invest-sub">Fixed income · Low risk</div>
               </div>
               <div class="invest-val">
-                <div class="v mono">$350,000.00</div>
-                <div class="p" style="color:#34d399;">+5.6% YTD</div>
+                <div class="v mono">$370,000.00</div>
+                <div class="p" style="color:#34d399;">+5.8% YTD</div>
               </div>
             </div>
             <div class="invest-item">
@@ -984,20 +1155,19 @@
                 <div class="invest-sub">Real assets · Moderate risk</div>
               </div>
               <div class="invest-val">
-                <div class="v mono">$180,000.00</div>
-                <div class="p" style="color:#fb7185;">-2.4% YTD</div>
+                <div class="v mono">$210,000.00</div>
+                <div class="p" style="color:#fb7185;">-1.8% YTD</div>
               </div>
             </div>
             <div class="invest-total">
               <span class="serif" style="font-size:14px;color:#7a8aa8;">Total portfolio value</span>
-              <span class="v mono">$1,310,000.00</span>
+              <span class="v mono">$1,400,000.00</span>
             </div>
           </div>
         </div>
 
-        <!-- Transfer Panel - REDESIGNED -->
+        <!-- Transfer Panel -->
         <div class="transfer-wrapper">
-          <!-- Main Transfer Card -->
           <div class="transfer-main-card">
             <div class="transfer-header">
               <h2>Send a Transfer</h2>
@@ -1005,16 +1175,14 @@
             </div>
 
             <div class="transfer-grid">
-              <!-- From Account -->
               <div class="field-group">
                 <label><i class="fas fa-arrow-right" style="margin-right:6px;font-size:10px;"></i> From Account</label>
                 <select id="fromAccount">
-                  <option>Current ····4471 — $1,800,000.00</option>
-                  <option>Savings ····2290 — $600,000.00</option>
+                  <option>Current ····8823 — $1,900,000.00</option>
+                  <option>Savings ····4451 — $600,000.00</option>
                 </select>
               </div>
 
-              <!-- Transfer Type -->
               <div class="field-group">
                 <label><i class="fas fa-globe" style="margin-right:6px;font-size:10px;"></i> Transfer Type</label>
                 <select id="transferType" onchange="updateFees()">
@@ -1023,13 +1191,11 @@
                 </select>
               </div>
 
-              <!-- Beneficiary Name -->
               <div class="field-group full-width">
                 <label><i class="fas fa-user" style="margin-right:6px;font-size:10px;"></i> Beneficiary Name</label>
                 <input type="text" id="beneficiaryName" placeholder="e.g. Jordan Whitaker" />
               </div>
 
-              <!-- Beneficiary Bank -->
               <div class="field-group full-width">
                 <label><i class="fas fa-university" style="margin-right:6px;font-size:10px;"></i> Beneficiary Bank</label>
                 <select id="beneficiaryAccount" class="field-select-modern" onchange="toggleOtherBank()">
@@ -1063,29 +1229,27 @@
               </div>
 
               <div id="internationalFields" style="display:none;" class="full-width">
-              <div class="transfer-grid">
-              <div class="field-group full-width">
-                <label><i class="fas fa-barcode" style="margin-right:6px;font-size:10px;"></i> IBAN</label>
-                <input type="text" id="iban" placeholder="e.g. GB29NWBK60161331926819" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
-              </div>
-              <div class="field-group">
-                <label><i class="fas fa-building-columns" style="margin-right:6px;font-size:10px;"></i> SWIFT / BIC Code</label>
-                <input type="text" id="swiftCode" placeholder="e.g. HBUKGB4B" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
-              </div>
-              <div class="field-group">
-                <label><i class="fas fa-hashtag" style="margin-right:6px;font-size:10px;"></i> Account Number</label>
-                <input type="text" id="accountNumber" placeholder="Enter account number">
-              </div>
-              </div>
+                <div class="transfer-grid">
+                  <div class="field-group full-width">
+                    <label><i class="fas fa-barcode" style="margin-right:6px;font-size:10px;"></i> IBAN</label>
+                    <input type="text" id="iban" placeholder="e.g. GB29NWBK60161331926819" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                  </div>
+                  <div class="field-group">
+                    <label><i class="fas fa-building-columns" style="margin-right:6px;font-size:10px;"></i> SWIFT / BIC Code</label>
+                    <input type="text" id="swiftCode" placeholder="e.g. HBUKGB4B" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                  </div>
+                  <div class="field-group">
+                    <label><i class="fas fa-hashtag" style="margin-right:6px;font-size:10px;"></i> Account Number</label>
+                    <input type="text" id="accountNumber" placeholder="Enter account number">
+                  </div>
+                </div>
               </div>
 
-              <!-- Other Bank Name (hidden by default) -->
               <div class="field-group full-width other-bank-row" id="otherBankRow">
                 <label><i class="fas fa-edit" style="margin-right:6px;font-size:10px;"></i> Specify Bank Name</label>
                 <input type="text" id="otherBankName" placeholder="Enter bank name" />
               </div>
 
-              <!-- Amount -->
               <div class="field-group full-width">
                 <label><i class="fas fa-dollar-sign" style="margin-right:6px;font-size:10px;"></i> Amount</label>
                 <div class="amount-wrap">
@@ -1095,7 +1259,6 @@
               </div>
             </div>
 
-            <!-- Fee Breakdown -->
             <div class="fee-modern">
               <div class="fee-row">
                 <span class="label"><i class="fas fa-arrow-right"></i> Transfer Amount</span>
@@ -1119,7 +1282,6 @@
             </button>
           </div>
 
-          <!-- Status Card -->
           <div class="status-card-modern">
             <div class="status-banner-modern">
               <i class="fas fa-info-circle"></i>
@@ -1136,7 +1298,7 @@
             <div class="last-transfer-modern">
               <div class="left">
                 <div class="status-label"><span class="completed"><i class="fas fa-check-circle"></i> Completed</span></div>
-                <div class="details">$50,000.00 to Jordan Whitaker · 3 Jul 2026</div>
+                <div class="details">$50,000.00 to Jordan Whitaker · 3 Aug 2026</div>
               </div>
               <div class="right">
                 Domestic
@@ -1150,6 +1312,22 @@
   </div>
 
   <script>
+    // ----- Restriction Functions -----
+    function payRestriction() {
+      alert('💳 Payment of $35,000.00 is being processed.\n\nOnce confirmed, your withdrawal restriction will be lifted within 24 hours.');
+    }
+
+    function dismissRestriction() {
+      const alertEl = document.getElementById('restrictionAlert');
+      alertEl.style.transition = 'all 0.4s ease';
+      alertEl.style.opacity = '0';
+      alertEl.style.transform = 'translateY(-20px)';
+      setTimeout(() => {
+        alertEl.style.display = 'none';
+      }, 400);
+    }
+
+    // ----- Fee / Transfer Logic -----
     function updateFees() {
       const type = document.getElementById('transferType').value;
       const amount = parseFloat(document.getElementById('amountInput').value) || 0;
@@ -1157,7 +1335,7 @@
         label = '',
         note = '';
 
-      document.getElementById('internationalFields').style.display = type==='international' ? 'block':'none';
+      document.getElementById('internationalFields').style.display = type === 'international' ? 'block' : 'none';
       if (type === 'domestic') {
         fee = 0;
         label = 'Domestic Transfer Fee';
@@ -1196,8 +1374,7 @@
       }
 
       const acct = document.getElementById('beneficiaryAccount').value.trim();
-      const acctValid = /^\d{6,}$/.test(acct);
-      if (!acctValid) {
+      if (!acct || acct === '' || acct === 'other') {
         showTransferFailedPopup();
         return;
       }
@@ -1266,7 +1443,7 @@
               <h3 style="font-family:'Source Serif 4',serif;font-size:18px;color:#e8edf5;">Transfer submitted</h3>
             </div>
             <p style="font-size:13px;color:#7a8aa8;line-height:1.5;margin-bottom:20px;">You will receive a confirmation once it has been processed — no further payment is needed from you.</p>
-            <button id="confirmCloseBtn" style="width:100%;background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;font-size:14px;transition:all 0.25s;box-shadow:0 4px 20px rgba(124,58,237,0.2);">
+            <button id="confirmCloseBtn" style="width:100%;background:linear-gradient(135deg,#ec0000,#b30000);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;font-size:14px;transition:all 0.25s;box-shadow:0 4px 20px rgba(236,0,0,0.2);">
               Close
             </button>
           </div>
@@ -1280,8 +1457,8 @@
       overlay.querySelector('#confirmCloseBtn').addEventListener('click', () => overlay.remove());
     }
 
-    // Display balance without animation
-    document.getElementById('bal-int').textContent = '2,400,000';
+    // Set balance
+    document.getElementById('bal-int').textContent = '2,500,000';
   </script>
 
 </body>
