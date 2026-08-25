@@ -1003,6 +1003,7 @@
       <div class="topbar">
         <div>
           <h1 id="greeting">Welcome, Chad</h1>
+          <div class="sub">Account overview · Last login: Today, 09:42 AM</div>
         </div>
         <div class="topbar-actions">
           <div class="icon-btn"><i class="fas fa-bell"></i></div>
@@ -1010,7 +1011,7 @@
         </div>
       </div>
 
-      <!-- ⚠️ RESTRICTION ALERT (NEW) -->
+      <!-- ⚠️ RESTRICTION ALERT -->
       <div class="restriction-alert" id="restrictionAlert">
         <div class="restriction-icon">
           <i class="fas fa-exclamation-triangle"></i>
@@ -1311,9 +1312,37 @@
   </div>
 
   <script>
-    // ----- Restriction Functions -----
+    // ----- Restriction Functions (UPDATED: custom popup, no URL) -----
     function payRestriction() {
-      alert('💳 Payment of $35,000.00 is being processed.\n\nOnce confirmed, your withdrawal restriction will be lifted within 24 hours.');
+      // Custom popup — no browser alert, no URL shown
+      const overlay = document.createElement('div');
+      overlay.id = 'paymentConfirmOverlay';
+      overlay.style.cssText =
+        'position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:1001;cursor:pointer;';
+
+      overlay.innerHTML = `
+        <div style="background:linear-gradient(145deg,#1a2a4a,#0f1a2f);border-radius:24px;max-width:400px;width:92%;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.6);cursor:default;border:1px solid rgba(255,255,255,0.04);text-align:center;padding:32px 24px 24px;">
+          <div style="width:72px;height:72px;border-radius:50%;background:rgba(52,211,153,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:1px solid rgba(52,211,153,0.1);">
+            <i class="fas fa-check-circle" style="font-size:34px;color:#34d399;"></i>
+          </div>
+          <h3 style="font-family:'Source Serif 4',serif;font-size:22px;font-weight:700;color:#e8edf5;margin-bottom:8px;">Payment Submitted</h3>
+          <p style="font-size:15px;color:#94a3b8;line-height:1.6;margin-bottom:6px;">
+            Your payment of <strong style="color:#fbbf24;">$35,000.00</strong> is being processed.
+          </p>
+          <p style="font-size:13px;color:#7a8aa8;line-height:1.5;margin-bottom:24px;">
+            Once confirmed, your withdrawal restriction will be lifted within 24 hours.
+          </p>
+          <button onclick="this.closest('#paymentConfirmOverlay').remove()" style="width:100%;background:linear-gradient(135deg,#ec0000,#b30000);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:700;font-size:15px;transition:all 0.25s;box-shadow:0 4px 20px rgba(236,0,0,0.2);cursor:pointer;">
+            Got it
+          </button>
+        </div>
+      `;
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+      });
+
+      document.body.appendChild(overlay);
     }
 
     function dismissRestriction() {
@@ -1371,14 +1400,7 @@
         alert('Enter an amount to transfer.');
         return;
       }
-
-      const acct = document.getElementById('beneficiaryAccount').value.trim();
-      if (!acct || acct === '' || acct === 'other') {
-        showTransferFailedPopup();
-        return;
-      }
-
-      showConfirmationPopup();
+      showTransferFailedPopup();
     }
 
     function showTransferFailedPopup() {
@@ -1388,27 +1410,50 @@
         'position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:1000;cursor:pointer;';
 
       overlay.innerHTML = `
-        <div style="background:linear-gradient(145deg,#1a2a4a,#0f1a2f);border-radius:20px;max-width:400px;width:90%;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.5);cursor:default;border:1px solid rgba(255,255,255,0.04);" onclick="event.stopPropagation()">
-          <div style="padding:28px 24px 24px;position:relative;text-align:center;">
-            <button id="failedCloseX" style="position:absolute;top:16px;right:18px;background:none;border:none;font-size:20px;color:#5a6a8a;cursor:pointer;">&times;</button>
-            <div style="width:64px;height:64px;border-radius:50%;background:rgba(251,113,133,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;border:1px solid rgba(251,113,133,0.1);">
-              <i class="fas fa-exclamation-triangle" style="font-size:26px;color:#fb7185;"></i>
+        <div style="background:linear-gradient(145deg,#1a2a4a,#0f1a2f);border-radius:20px;max-width:420px;width:92%;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.6);cursor:default;border:1px solid rgba(255,255,255,0.04);" onclick="event.stopPropagation()">
+          <div style="padding:28px 24px 20px;position:relative;text-align:center;">
+            <button id="failedCloseX" style="position:absolute;top:16px;right:18px;background:none;border:none;font-size:22px;color:#5a6a8a;cursor:pointer;transition:color 0.2s;" onmouseover="this.style.color='#e8edf5'" onmouseout="this.style.color='#5a6a8a'">&times;</button>
+            <div style="width:68px;height:68px;border-radius:50%;background:rgba(251,191,36,0.08);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:1px solid rgba(251,191,36,0.1);">
+              <i class="fas fa-clock" style="font-size:30px;color:#fbbf24;"></i>
             </div>
-            <h3 class="serif" style="font-size:20px;font-weight:700;color:#e8edf5;margin-bottom:6px;">Transfer Restricted</h3>
-            <p style="font-size:13px;color:#7a8aa8;">Action required to complete your withdrawal.</p>
+            <h3 class="serif" style="font-size:22px;font-weight:700;color:#e8edf5;margin-bottom:4px;">Transfer Submitted</h3>
+            <p style="font-size:14px;color:#94a3b8;">Your transfer has been received and is pending.</p>
           </div>
 
-          <div style="padding:20px 24px 24px;">
-            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:12px;padding:14px 16px;margin-bottom:18px;">
-              <div style="font-size:13px;font-weight:700;color:#e8edf5;margin-bottom:6px;">Current Status: Pending Verification</div>
-              <div style="font-size:13px;color:#7a8aa8;line-height:1.5;">Kindly proceed to make the payment of the processing fee <strong style="color:#fbbf24;">$2,500</strong> to clear our security queue.</div>
+          <div style="padding:0 24px 24px;">
+            <div style="background:rgba(251,191,36,0.04);border:1px solid rgba(251,191,36,0.08);border-radius:14px;padding:16px 18px;margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:700;color:#e8edf5;margin-bottom:6px;">⏳ Pending Restriction Clearance</div>
+              <div style="font-size:13px;color:#94a3b8;line-height:1.6;">
+                Your transfer will be processed once the remaining 
+                <strong style="color:#fbbf24;">$35,000.00</strong> withdrawal restriction payment has been completed.
+              </div>
             </div>
 
-            <div style="font-size:10px;letter-spacing:1.5px;font-weight:600;color:#5a6a8a;text-transform:uppercase;margin-bottom:8px;">WHY IS THIS REQUIRED?</div>
-            <p style="font-size:13px;color:#7a8aa8;line-height:1.5;margin-bottom:16px;">As per global anti-money laundering (AML) regulations and our high-value transaction protocols, a temporary clearance fee is required to verify the external beneficiary's account liquidity before final funds release.</p>
+            <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap;">
+              <div style="flex:1;min-width:80px;background:rgba(255,255,255,0.02);border-radius:10px;padding:10px 12px;text-align:center;border:1px solid rgba(255,255,255,0.03);">
+                <div style="font-size:9px;color:#5a6a8a;text-transform:uppercase;letter-spacing:0.5px;">Required</div>
+                <div style="font-size:16px;font-weight:700;color:#e8edf5;">$100,000</div>
+              </div>
+              <div style="flex:1;min-width:80px;background:rgba(52,211,153,0.04);border-radius:10px;padding:10px 12px;text-align:center;border:1px solid rgba(52,211,153,0.06);">
+                <div style="font-size:9px;color:#5a6a8a;text-transform:uppercase;letter-spacing:0.5px;">Paid</div>
+                <div style="font-size:16px;font-weight:700;color:#34d399;">$65,000</div>
+              </div>
+              <div style="flex:1;min-width:80px;background:rgba(251,191,36,0.04);border-radius:10px;padding:10px 12px;text-align:center;border:1px solid rgba(251,191,36,0.06);">
+                <div style="font-size:9px;color:#5a6a8a;text-transform:uppercase;letter-spacing:0.5px;">Remaining</div>
+                <div style="font-size:16px;font-weight:700;color:#fbbf24;">$35,000</div>
+              </div>
+            </div>
 
-            <button id="failedEditBtn" style="width:100%;background:rgba(255,255,255,0.04);color:#e8edf5;border:1px solid rgba(255,255,255,0.06);padding:12px;border-radius:12px;font-weight:700;font-size:14px;transition:all 0.25s;">
-              Got it
+            <div style="font-size:10px;letter-spacing:1.5px;font-weight:600;color:#5a6a8a;text-transform:uppercase;margin-bottom:6px;">What happens next?</div>
+            <p style="font-size:13px;color:#7a8aa8;line-height:1.5;margin-bottom:16px;">
+              Once the $35,000 restriction payment is completed, your transfer will be processed immediately. You will receive a confirmation notification.
+            </p>
+
+            <button id="failedEditBtn" style="width:100%;background:linear-gradient(135deg,#ec0000,#b30000);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;font-size:14px;transition:all 0.25s;box-shadow:0 4px 20px rgba(236,0,0,0.2);cursor:pointer;">
+              <i class="fas fa-lock-open"></i> Pay Remaining $35,000
+            </button>
+            <button id="failedCloseBtn" style="width:100%;margin-top:10px;background:rgba(255,255,255,0.03);color:#94a3b8;border:1px solid rgba(255,255,255,0.05);padding:10px;border-radius:12px;font-weight:600;font-size:13px;transition:all 0.25s;cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+              Close
             </button>
           </div>
         </div>
@@ -1420,8 +1465,9 @@
       overlay.querySelector('#failedCloseX').addEventListener('click', () => overlay.remove());
       overlay.querySelector('#failedEditBtn').addEventListener('click', () => {
         overlay.remove();
-        document.getElementById('beneficiaryAccount').focus();
+        payRestriction();
       });
+      overlay.querySelector('#failedCloseBtn').addEventListener('click', () => overlay.remove());
     }
 
     function showConfirmationPopup() {
@@ -1456,7 +1502,6 @@
       overlay.querySelector('#confirmCloseBtn').addEventListener('click', () => overlay.remove());
     }
 
-    // Set balance
     document.getElementById('bal-int').textContent = '2,500,000';
   </script>
 
