@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Poholing · next‑gen banking</title>
+  <title>Santander · trusted banking</title>
   <!-- Font Awesome 6 (free) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
   <style>
@@ -16,122 +16,151 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0b1120;
-      color: #e8edf5;
+      background: #f8f9fc;
+      color: #1a1a1a;
       line-height: 1.5;
-      min-height: 100vh;
     }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
 
-    /* ----- glass + gradient helpers ----- */
-    .glass-heavy {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(18px) saturate(180%);
-      -webkit-backdrop-filter: blur(18px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+    /* ----- utility ----- */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
-    .gradient-text {
-      background: linear-gradient(135deg, #a78bfa, #60a5fa, #34d399);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .text-red { color: #ec0000; }
+    .bg-red { background: #ec0000; }
+    .btn-red {
+      background: #ec0000;
+      color: #fff;
+      border: none;
+      padding: 14px 36px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 18px rgba(236, 0, 0, 0.25);
+    }
+    .btn-red:hover {
+      background: #c70000;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(236, 0, 0, 0.35);
+    }
+    .btn-outline-red {
+      background: transparent;
+      color: #ec0000;
+      border: 2px solid #ec0000;
+      padding: 12px 32px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s, transform 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-outline-red:hover {
+      background: #ec0000;
+      color: #fff;
+      transform: translateY(-3px);
     }
 
-    /* ----- top bar (minimal, dark) ----- */
+    /* ----- top bar (thin, white) ----- */
     .top-bar {
+      background: #fff;
+      border-bottom: 1px solid #eaeaea;
+      padding: 10px 24px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 48px;
       font-size: 13px;
-      color: #94a3b8;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-      background: rgba(11, 17, 32, 0.8);
-      backdrop-filter: blur(6px);
+      color: #4a4a4a;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .top-bar .left a {
-      margin-right: 32px;
-      color: #94a3b8;
+      margin-right: 28px;
+      color: #4a4a4a;
       font-weight: 500;
       transition: color 0.2s;
     }
-    .top-bar .left a:hover { color: #c4b5fd; }
+    .top-bar .left a:hover { color: #ec0000; }
     .top-bar .right {
       display: flex;
-      gap: 28px;
+      gap: 24px;
+      align-items: center;
     }
     .top-bar .right span {
       display: flex;
       align-items: center;
-      gap: 8px;
-      opacity: 0.7;
+      gap: 6px;
+      opacity: 0.75;
     }
+    .top-bar .right span i { color: #ec0000; }
 
-    /* ----- main nav (glass + distinct) ----- */
+    /* ----- main nav (white, shadow) ----- */
     .main-nav {
+      background: #fff;
+      padding: 16px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 48px;
-      background: rgba(11, 17, 32, 0.6);
-      backdrop-filter: blur(14px) saturate(180%);
-      -webkit-backdrop-filter: blur(14px) saturate(180%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid #f0f0f0;
       position: sticky;
       top: 0;
       z-index: 100;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-    .main-nav.scrolled {
-      background: rgba(11, 17, 32, 0.92);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.02);
     }
     .logo {
       display: flex;
       align-items: center;
-      gap: 14px;
-      font-size: 24px;
+      gap: 12px;
+      font-size: 28px;
       font-weight: 800;
       letter-spacing: -0.5px;
+      color: #1a1a1a;
     }
-    .logo .badge {
-      font-size: 10px;
-      font-weight: 600;
-      background: rgba(167, 139, 250, 0.2);
-      color: #a78bfa;
-      padding: 2px 10px;
-      border-radius: 40px;
-      letter-spacing: 1px;
-    }
-    .logo-mark {
-      width: 38px;
-      height: 38px;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+    .logo .logo-mark {
+      background: #ec0000;
+      color: #fff;
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 22px;
       font-weight: 700;
-      font-size: 18px;
-      color: #fff;
-      transform: rotate(-4deg);
-      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: rotate(-2deg);
+      transition: transform 0.3s;
     }
-    .logo:hover .logo-mark { transform: rotate(4deg) scale(1.06); }
+    .logo:hover .logo-mark { transform: rotate(2deg) scale(1.04); }
+    .logo .badge {
+      font-size: 10px;
+      font-weight: 600;
+      background: #f0f0f0;
+      color: #4a4a4a;
+      padding: 2px 12px;
+      border-radius: 40px;
+      letter-spacing: 0.5px;
+      margin-left: 4px;
+    }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 32px;
     }
     .nav-links li {
       font-size: 15px;
       font-weight: 500;
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      color: #2a2a2a;
       cursor: pointer;
       transition: color 0.2s;
       position: relative;
@@ -139,15 +168,15 @@
     .nav-links li::after {
       content: '';
       position: absolute;
-      bottom: -4px;
+      bottom: -6px;
       left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, #a78bfa, #60a5fa);
-      border-radius: 2px;
-      transition: width 0.3s ease;
+      width: 0%;
+      height: 3px;
+      background: #ec0000;
+      border-radius: 4px;
+      transition: width 0.25s ease;
     }
-    .nav-links li:hover { color: #e2e8f0; }
+    .nav-links li:hover { color: #ec0000; }
     .nav-links li:hover::after { width: 100%; }
 
     .nav-right {
@@ -157,60 +186,69 @@
     }
     .nav-right i {
       font-size: 18px;
-      color: #94a3b8;
+      color: #4a4a4a;
       cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
+      transition: color 0.2s;
     }
-    .nav-right i:hover { color: #c4b5fd; transform: scale(1.08); }
+    .nav-right i:hover { color: #ec0000; }
 
-    .login-btn {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    .login-btn-nav {
+      background: #ec0000;
       color: #fff;
+      border: none;
       padding: 10px 28px;
       border-radius: 60px;
       font-weight: 600;
       font-size: 14px;
-      border: none;
       cursor: pointer;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
       display: flex;
       align-items: center;
-      gap: 10px;
-      transition: transform 0.25s, box-shadow 0.25s;
-      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(236, 0, 0, 0.20);
     }
-    .login-btn:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 8px 28px rgba(124, 58, 237, 0.40);
+    .login-btn-nav:hover {
+      background: #c70000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(236, 0, 0, 0.30);
     }
 
     .menu-toggle {
       display: none;
       background: none;
       border: none;
-      color: #e2e8f0;
-      font-size: 24px;
+      font-size: 26px;
+      color: #1a1a1a;
       cursor: pointer;
     }
     .mobile-menu { display: none; }
 
-    /* ----- hero (gradient + glass) ----- */
+    /* ----- hero (red, bold) ----- */
     .hero {
+      background: #ec0000;
+      color: #fff;
+      padding: 60px 24px 70px;
       display: flex;
       align-items: center;
       gap: 40px;
-      padding: 60px 48px 80px;
-      min-height: 560px;
-      background: radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.15), transparent 60%),
-                  radial-gradient(ellipse at 20% 80%, rgba(96, 165, 250, 0.10), transparent 50%);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+      flex-wrap: wrap;
+      border-bottom: 6px solid #b30000;
+    }
+    .hero .container {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      width: 100%;
     }
     .hero-text {
       flex: 1;
+      min-width: 280px;
     }
     .hero-text .tag {
       display: inline-block;
-      background: rgba(167, 139, 250, 0.15);
-      color: #a78bfa;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
       font-size: 13px;
       font-weight: 600;
       padding: 6px 18px;
@@ -219,295 +257,294 @@
       letter-spacing: 0.5px;
     }
     .hero-text h1 {
-      font-size: 52px;
+      font-size: 48px;
       font-weight: 800;
       line-height: 1.1;
-      letter-spacing: -1.5px;
-      margin-bottom: 20px;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
     }
-    .hero-text h1 span { color: #a78bfa; }
+    .hero-text h1 span { color: #ffcccc; }
     .hero-text p {
       font-size: 18px;
-      color: #94a3b8;
+      color: #ffdede;
       max-width: 480px;
       margin-bottom: 32px;
     }
     .hero-ctas {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       flex-wrap: wrap;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    .btn-white {
+      background: #fff;
+      color: #ec0000;
+      padding: 16px 36px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.10);
+    }
+    .btn-white:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.15);
+    }
+    .btn-outline-white {
+      background: transparent;
       color: #fff;
       padding: 16px 36px;
       border-radius: 60px;
       font-weight: 600;
       font-size: 16px;
-      border: none;
-      cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.25s;
-      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.30);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .btn-primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 36px rgba(124, 58, 237, 0.45);
-    }
-    .btn-outline {
-      background: transparent;
-      color: #e2e8f0;
-      padding: 16px 36px;
-      border-radius: 60px;
-      font-weight: 600;
-      font-size: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255,255,255,0.4);
       cursor: pointer;
       transition: background 0.25s, border-color 0.25s, transform 0.2s;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 10px;
     }
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(167, 139, 250, 0.4);
+    .btn-outline-white:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: #fff;
       transform: translateY(-2px);
     }
+
     .hero-stats {
       display: flex;
       gap: 48px;
-      margin-top: 40px;
-    }
-    .hero-stats div {
-      text-align: left;
+      margin-top: 36px;
+      flex-wrap: wrap;
     }
     .hero-stats .num {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 800;
-      color: #e2e8f0;
+      color: #fff;
     }
     .hero-stats .label {
-      font-size: 13px;
-      color: #64748b;
+      font-size: 14px;
+      color: #ffdede;
     }
 
     .hero-visual {
       flex: 1;
-      min-height: 400px;
-      background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.06));
-      border-radius: 40px;
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-visual .floating-card {
-      background: rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 28px;
-      padding: 32px 40px;
+      min-width: 240px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 32px;
+      padding: 32px 28px;
+      border: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(4px);
       text-align: center;
-      max-width: 320px;
-      transform: rotate(-2deg);
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-    .hero-visual .floating-card i {
-      font-size: 40px;
-      background: linear-gradient(135deg, #a78bfa, #60a5fa);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .hero-visual i {
+      font-size: 44px;
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      padding: 16px;
+      border-radius: 60px;
     }
-    .hero-visual .floating-card h3 {
-      font-size: 22px;
-      margin: 12px 0 4px;
+    .hero-visual h3 {
+      font-size: 24px;
+      margin: 16px 0 6px;
+      color: #fff;
     }
-    .hero-visual .floating-card p {
-      color: #94a3b8;
-      font-size: 14px;
+    .hero-visual p {
+      color: #ffdede;
+      font-size: 15px;
     }
-    .hero-visual .floating-card .chip {
+    .hero-visual .chip {
       display: inline-block;
-      background: rgba(167, 139, 250, 0.15);
-      color: #a78bfa;
-      padding: 4px 16px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      padding: 4px 18px;
       border-radius: 40px;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 600;
       margin-top: 12px;
     }
 
-    /* ----- feature grid (glass) ----- */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-      padding: 60px 48px;
-      max-width: 1440px;
-      margin: 0 auto;
-    }
-    .feature-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 28px;
-      padding: 32px 24px;
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  background 0.3s, border-color 0.3s;
-      text-align: center;
-    }
-    .feature-card:hover {
-      transform: translateY(-10px);
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(167, 139, 250, 0.15);
-    }
-    .feature-card .icon-wrap {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 18px;
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(96, 165, 250, 0.10));
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      color: #a78bfa;
-      transition: transform 0.3s;
-    }
-    .feature-card:hover .icon-wrap { transform: scale(1.08) rotate(-4deg); }
-    .feature-card h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .feature-card p {
-      font-size: 14px;
-      color: #94a3b8;
-      line-height: 1.5;
-    }
-
-    /* ----- content section (dark glass) ----- */
-    .content-section {
-      display: flex;
-      gap: 36px;
-      padding: 40px 48px 70px;
-      max-width: 1440px;
-      margin: 0 auto;
-      align-items: flex-start;
-    }
-    .products-col { flex: 1; }
-    .products-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 28px;
-    }
-    .products-header h2 {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .products-header h2 span { color: #a78bfa; }
-    .view-all {
-      color: #a78bfa;
-      font-weight: 600;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: gap 0.25s;
-    }
-    .view-all:hover { gap: 14px; }
-
-    .product-grid {
+    /* ----- quick actions (tiles) ----- */
+    .quick-actions {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
+      padding: 40px 0 20px;
+    }
+    .quick-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+      border: 1px solid #f0f0f0;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .quick-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.06);
+      border-color: #ec0000;
+    }
+    .quick-card i {
+      font-size: 32px;
+      color: #ec0000;
+      background: #fce8e8;
+      padding: 16px;
+      border-radius: 60px;
+      margin-bottom: 14px;
+    }
+    .quick-card h4 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .quick-card p {
+      font-size: 14px;
+      color: #6a6a6a;
+    }
+
+    /* ----- section titles ----- */
+    .section-title {
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .section-sub {
+      color: #6a6a6a;
+      font-size: 17px;
+      margin-bottom: 32px;
+    }
+
+    /* ----- products grid ----- */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 20px 0 40px;
     }
     .product-card {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      border-radius: 24px;
-      padding: 28px 22px;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  background 0.3s, border-color 0.3s;
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 24px;
+      border: 1px solid #f0f0f0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
     .product-card:hover {
-      transform: translateY(-8px) scale(1.01);
-      background: rgba(255, 255, 255, 0.06);
-      border-color: rgba(167, 139, 250, 0.12);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+      border-color: #ec0000;
     }
     .product-card .p-icon {
-      width: 52px;
-      height: 52px;
-      background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.08));
-      border-radius: 30px;
+      width: 60px;
+      height: 60px;
+      background: #fce8e8;
+      border-radius: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      color: #a78bfa;
+      font-size: 28px;
+      color: #ec0000;
       margin-bottom: 16px;
-      transition: transform 0.3s;
     }
-    .product-card:hover .p-icon { transform: scale(1.10) rotate(-4deg); }
     .product-card h3 {
-      font-size: 17px;
+      font-size: 20px;
       font-weight: 700;
       margin-bottom: 6px;
     }
     .product-card p {
-      font-size: 13px;
-      color: #94a3b8;
-      line-height: 1.5;
+      font-size: 14px;
+      color: #6a6a6a;
       margin-bottom: 16px;
     }
     .product-card a {
-      color: #a78bfa;
+      color: #ec0000;
       font-weight: 600;
       font-size: 14px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: gap 0.25s;
+      transition: gap 0.2s;
     }
     .product-card a:hover { gap: 14px; }
 
-    /* ----- banking card (gradient glass) ----- */
-    .banking-col {
-      flex: 0 0 340px;
-      background: linear-gradient(145deg, rgba(124, 58, 237, 0.12), rgba(96, 165, 250, 0.06));
-      backdrop-filter: blur(18px) saturate(180%);
-      -webkit-backdrop-filter: blur(18px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+    /* ----- app promo (red) ----- */
+    .app-promo {
+      background: #ec0000;
+      color: #fff;
       border-radius: 32px;
-      padding: 36px 28px;
-      color: #e2e8f0;
-      align-self: stretch;
+      padding: 48px 40px;
+      margin: 30px 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    .app-promo h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .app-promo p {
+      font-size: 16px;
+      color: #ffdede;
+      max-width: 400px;
+    }
+    .app-promo .btn-white { box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    .app-promo .btn-white:hover { box-shadow: 0 14px 36px rgba(0,0,0,0.20); }
+
+    /* ----- login card (white, clean) ----- */
+    .login-section {
+      display: flex;
+      gap: 40px;
+      padding: 20px 0 50px;
+      flex-wrap: wrap;
+    }
+    .login-col {
+      flex: 1;
+      min-width: 280px;
+    }
+    .login-col h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .login-col p {
+      color: #6a6a6a;
+      margin-bottom: 28px;
+    }
+
+    .banking-card {
+      background: #fff;
+      border-radius: 28px;
+      padding: 36px 32px;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.06);
+      border: 1px solid #f0f0f0;
+      flex: 0 0 380px;
+      align-self: flex-start;
       transition: transform 0.3s, box-shadow 0.3s;
-      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
     }
-    .banking-col:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.3);
+    .banking-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 56px rgba(0,0,0,0.08);
     }
-    .banking-col h3 {
+    .banking-card h3 {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       margin-bottom: 24px;
+      color: #1a1a1a;
     }
-    .banking-col h3 i { color: #a78bfa; }
+    .banking-card h3 i { color: #ec0000; }
 
     .input-group {
       position: relative;
@@ -518,45 +555,46 @@
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: #64748b;
+      color: #8a8a8a;
       font-size: 16px;
     }
     .input-group input {
       width: 100%;
       padding: 14px 16px 14px 48px;
       border-radius: 60px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: rgba(0, 0, 0, 0.25);
-      color: #e2e8f0;
+      border: 2px solid #eaeaea;
+      background: #fafafa;
+      color: #1a1a1a;
       font-size: 15px;
       outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
     .input-group input:focus {
-      border-color: #a78bfa;
-      background: rgba(0, 0, 0, 0.35);
+      border-color: #ec0000;
+      background: #fff;
     }
-    .input-group input::placeholder { color: #64748b; }
+    .input-group input::placeholder { color: #9a9a9a; }
     .input-group .eye {
       left: auto;
       right: 16px;
       cursor: pointer;
-      color: #64748b;
+      color: #8a8a8a;
     }
+
     .input-group.has-error input {
-      border-color: #f87171;
-      background: rgba(248, 113, 113, 0.08);
+      border-color: #ec0000;
+      background: #fff5f5;
     }
-    .input-group.has-error i:not(.eye) { color: #f87171; }
+    .input-group.has-error i:not(.eye) { color: #ec0000; }
 
     .field-error {
       display: none;
       align-items: center;
       gap: 6px;
-      color: #fca5a5;
+      color: #ec0000;
       font-size: 12px;
       font-weight: 600;
-      margin: 8px 6px 14px;
+      margin: 6px 6px 14px;
     }
     .field-error i { font-size: 14px; }
     .input-group.has-error + .field-error { display: flex; }
@@ -565,13 +603,13 @@
       display: none;
       align-items: flex-start;
       gap: 12px;
-      background: rgba(248, 113, 113, 0.08);
-      border: 1px solid rgba(248, 113, 113, 0.15);
+      background: #fff5f5;
+      border: 1px solid #fcc;
       border-radius: 16px;
       padding: 14px 18px;
       margin-bottom: 18px;
       font-size: 13px;
-      color: #fca5a5;
+      color: #c70000;
     }
     .form-alert.show { display: flex; }
     .form-alert i { font-size: 18px; margin-top: 1px; }
@@ -581,16 +619,16 @@
       justify-content: space-between;
       align-items: center;
       font-size: 13px;
-      color: #94a3b8;
-      margin: 20px 0 22px;
+      color: #4a4a4a;
+      margin: 18px 0 22px;
     }
     .remember-row label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-    .remember-row a { color: #94a3b8; transition: color 0.2s; }
-    .remember-row a:hover { color: #c4b5fd; }
+    .remember-row a { color: #4a4a4a; transition: color 0.2s; }
+    .remember-row a:hover { color: #ec0000; }
 
     .btn-login-full {
       width: 100%;
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      background: #ec0000;
       color: #fff;
       border: none;
       padding: 16px;
@@ -598,16 +636,17 @@
       font-weight: 700;
       font-size: 16px;
       cursor: pointer;
-      transition: transform 0.25s, box-shadow 0.25s, opacity 0.2s;
+      transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      box-shadow: 0 6px 24px rgba(124, 58, 237, 0.25);
+      box-shadow: 0 6px 20px rgba(236, 0, 0, 0.20);
     }
     .btn-login-full:hover {
+      background: #c70000;
       transform: translateY(-3px);
-      box-shadow: 0 14px 36px rgba(124, 58, 237, 0.35);
+      box-shadow: 0 14px 32px rgba(236, 0, 0, 0.30);
     }
     .btn-login-full:disabled {
       opacity: 0.6;
@@ -617,7 +656,7 @@
     }
     .spinner {
       width: 18px; height: 18px;
-      border: 2.5px solid rgba(255, 255, 255, 0.2);
+      border: 2.5px solid rgba(255,255,255,0.2);
       border-top-color: #fff;
       border-radius: 50%;
       display: none;
@@ -628,87 +667,82 @@
     .new-user {
       text-align: center;
       font-size: 13px;
-      color: #94a3b8;
-      margin-bottom: 14px;
+      color: #4a4a4a;
+      margin: 16px 0 12px;
     }
     .btn-register {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
-      color: #e2e8f0;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #f8f9fc;
+      color: #1a1a1a;
+      border: 2px solid #eaeaea;
       padding: 14px;
       border-radius: 60px;
       font-weight: 600;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.25s, transform 0.25s;
+      transition: background 0.25s, border-color 0.25s, transform 0.25s;
     }
     .btn-register:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: #fff;
+      border-color: #ec0000;
       transform: translateY(-2px);
     }
 
-    /* ----- trust bar (dark glass) ----- */
-    .trust-bar {
-      display: flex;
-      justify-content: center;
-      gap: 60px;
-      padding: 24px 48px;
-      border-top: 1px solid rgba(255, 255, 255, 0.03);
-      background: rgba(11, 17, 32, 0.5);
-      backdrop-filter: blur(8px);
-      flex-wrap: wrap;
-      margin: 0 20px 20px;
-      border-radius: 60px;
+    /* ----- footer ----- */
+    .footer {
+      background: #1a1a1a;
+      color: #ccc;
+      padding: 48px 24px 32px;
+      margin-top: 40px;
+      border-top: 4px solid #ec0000;
     }
-    .trust-bar span {
+    .footer .container {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #333;
+    }
+    .footer h4 {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .footer p { font-size: 14px; line-height: 1.6; max-width: 300px; }
+    .footer ul li {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #aaa;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .footer ul li:hover { color: #fff; }
+    .footer .social {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .footer .social i {
+      font-size: 20px;
+      color: #aaa;
+      transition: color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .footer .social i:hover { color: #ec0000; transform: scale(1.10); }
+    .footer .bottom {
+      text-align: center;
       font-size: 13px;
-      font-weight: 500;
-      color: #94a3b8;
+      color: #777;
+      padding-top: 24px;
     }
-    .trust-bar span i { color: #a78bfa; font-size: 16px; }
-
-    /* ----- reveal animations ----- */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .reveal.reveal-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-left { transform: translateX(-40px); }
-    .reveal-left.reveal-visible { transform: translateX(0); }
-    .reveal-right { transform: translateX(40px); }
-    .reveal-right.reveal-visible { transform: translateX(0); }
-
-    .reveal-stagger > * {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-    .reveal-stagger.reveal-visible > * {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal-stagger.reveal-visible > *:nth-child(1) { transition-delay: 0.05s; }
-    .reveal-stagger.reveal-visible > *:nth-child(2) { transition-delay: 0.15s; }
-    .reveal-stagger.reveal-visible > *:nth-child(3) { transition-delay: 0.25s; }
-    .reveal-stagger.reveal-visible > *:nth-child(4) { transition-delay: 0.35s; }
+    .footer .bottom span { color: #ec0000; }
 
     /* ----- responsive ----- */
-    @media (max-width: 1100px) {
-      .content-section { flex-direction: column; }
-      .banking-col { flex: 1; width: 100%; }
-      .product-grid { grid-template-columns: repeat(2, 1fr); }
-      .feature-grid { grid-template-columns: repeat(2, 1fr); }
-      .hero { flex-direction: column; padding: 40px 24px 60px; }
-      .hero-text h1 { font-size: 38px; }
+    @media (max-width: 1024px) {
+      .quick-actions { grid-template-columns: repeat(2, 1fr); }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer .container { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 900px) {
       .nav-links { display: none; }
@@ -716,47 +750,54 @@
       .mobile-menu.open {
         display: flex;
         flex-direction: column;
-        background: rgba(11, 17, 32, 0.95);
-        backdrop-filter: blur(12px);
+        background: #fff;
         padding: 16px 24px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        border-bottom: 1px solid #f0f0f0;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.04);
       }
       .mobile-menu.open li {
         padding: 12px 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid #f5f5f5;
         font-size: 15px;
         font-weight: 500;
-        color: #cbd5e1;
+        color: #1a1a1a;
       }
       .mobile-menu.open li:last-child { border-bottom: none; }
+      .mobile-menu.open li:hover { color: #ec0000; }
+      .hero-text h1 { font-size: 34px; }
+      .banking-card { flex: 1; width: 100%; }
+      .app-promo { flex-direction: column; text-align: center; }
+      .app-promo p { max-width: 100%; }
     }
     @media (max-width: 700px) {
-      .top-bar { padding: 8px 16px; flex-wrap: wrap; gap: 8px; }
-      .top-bar .left a { margin-right: 16px; font-size: 12px; }
-      .top-bar .right { gap: 14px; flex-wrap: wrap; }
+      .top-bar { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .top-bar .left a { margin-right: 14px; font-size: 12px; }
+      .top-bar .right { gap: 12px; flex-wrap: wrap; }
       .main-nav { padding: 12px 16px; }
-      .logo { font-size: 18px; }
-      .logo-mark { width: 30px; height: 30px; font-size: 14px; }
-      .login-btn { padding: 8px 18px; font-size: 13px; }
-      .login-btn span { display: none; }
+      .logo { font-size: 22px; }
+      .logo .logo-mark { width: 36px; height: 36px; font-size: 18px; }
+      .login-btn-nav span { display: none; }
 
-      .hero { padding: 32px 16px 40px; }
+      .hero { padding: 40px 16px 50px; }
       .hero-text h1 { font-size: 28px; }
-      .hero-text p { font-size: 15px; }
-      .hero-stats { gap: 24px; flex-wrap: wrap; }
-      .hero-stats .num { font-size: 22px; }
-      .hero-visual { min-height: 240px; }
-      .hero-visual .floating-card { padding: 24px 20px; }
+      .hero-stats { gap: 20px; }
+      .hero-stats .num { font-size: 24px; }
 
-      .feature-grid { grid-template-columns: 1fr; padding: 32px 16px; gap: 16px; }
-      .content-section { padding: 24px 16px 40px; gap: 20px; }
-      .product-grid { grid-template-columns: 1fr; gap: 14px; }
-      .banking-col { padding: 24px 20px; }
+      .quick-actions { grid-template-columns: 1fr; gap: 14px; padding: 20px 0; }
+      .products-grid { grid-template-columns: 1fr; gap: 16px; }
+      .section-title { font-size: 26px; }
 
-      .trust-bar { gap: 16px; flex-direction: column; align-items: flex-start; padding: 20px 16px; margin: 0 12px 16px; border-radius: 32px; }
+      .banking-card { padding: 24px 18px; }
+      .login-section { flex-direction: column; }
+
+      .app-promo { padding: 32px 20px; }
+      .app-promo h2 { font-size: 24px; }
+
+      .footer .container { grid-template-columns: 1fr; gap: 28px; }
     }
     @media (max-width: 380px) {
       .hero-text h1 { font-size: 24px; }
+      .hero-ctas .btn-white, .hero-ctas .btn-outline-white { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -767,174 +808,231 @@
     <div class="left">
       <a href="#">Personal</a>
       <a href="#">Business</a>
+      <a href="#">Private Banking</a>
       <a href="#">About</a>
-      <a href="#">Investors</a>
     </div>
     <div class="right">
       <span><i class="fas fa-map-marker-alt"></i> Branches</span>
-      <span><i class="fas fa-headset"></i> Support</span>
-      <span><i class="fas fa-phone-alt"></i> +44 20 7946 0580</span>
+      <span><i class="fas fa-headset"></i> Help</span>
     </div>
   </div>
 
   <!-- main nav -->
   <nav class="main-nav" id="mainNav">
     <div class="logo">
-      <div class="logo-mark">P</div>
-      POHOLING <span class="badge">PLC</span>
+      <div class="logo-mark">S</div>
+      Santander <span class="badge">UK</span>
     </div>
     <ul class="nav-links">
-      <li>Accounts ▾</li>
-      <li>Loans ▾</li>
-      <li>Cards ▾</li>
-      <li>Investments ▾</li>
-      <li>Digital ▾</li>
-      <li>More ▾</li>
+      <li>Accounts</li>
+      <li>Loans</li>
+      <li>Mortgages</li>
+      <li>Cards</li>
+      <li>Investments</li>
+      <li>Insurance</li>
     </ul>
     <div class="nav-right">
       <i class="fas fa-search"></i>
-      <button class="login-btn" onclick="document.querySelector('.banking-col').scrollIntoView({behavior:'smooth'});">
+      <button class="login-btn-nav" onclick="document.getElementById('loginCard').scrollIntoView({behavior:'smooth'});">
         <i class="fas fa-lock"></i> <span>Login</span>
       </button>
       <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
     </div>
   </nav>
   <ul class="nav-links mobile-menu" id="mobileMenu">
-    <li>Accounts ▾</li>
-    <li>Loans ▾</li>
-    <li>Cards ▾</li>
-    <li>Investments ▾</li>
-    <li>Digital ▾</li>
-    <li>More ▾</li>
+    <li>Accounts</li>
+    <li>Loans</li>
+    <li>Mortgages</li>
+    <li>Cards</li>
+    <li>Investments</li>
+    <li>Insurance</li>
   </ul>
 
   <!-- hero -->
   <section class="hero">
-    <div class="hero-text">
-      <div class="tag"><i class="fas fa-sparkles" style="margin-right:6px;"></i> Next‑gen banking</div>
-      <h1>Money moves <br><span>at the speed of life</span></h1>
-      <p>Experience a new kind of banking — secure, intuitive, and built for the way you live today.</p>
-      <div class="hero-ctas">
-        <button class="btn-primary"><i class="fas fa-rocket"></i> Get Started</button>
-        <button class="btn-outline"><i class="fas fa-play-circle"></i> See how</button>
+    <div class="container">
+      <div class="hero-text">
+        <div class="tag"><i class="fas fa-star" style="margin-right:6px;"></i> Bank with confidence</div>
+        <h1>Your future <br><span>starts with us</span></h1>
+        <p>Smart banking for real life — from everyday accounts to mortgages and investments.</p>
+        <div class="hero-ctas">
+          <button class="btn-white"><i class="fas fa-arrow-right"></i> Open account</button>
+          <button class="btn-outline-white"><i class="fas fa-play-circle"></i> Explore</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="num">14M+</div><div class="label">UK customers</div></div>
+          <div><div class="num">800+</div><div class="label">Branches</div></div>
+          <div><div class="num">96%</div><div class="label">Customer trust</div></div>
+        </div>
       </div>
-      <div class="hero-stats">
-        <div><div class="num">4.8M+</div><div class="label">Active users</div></div>
-        <div><div class="num">£12B</div><div class="label">Transactions</div></div>
-        <div><div class="num">98%</div><div class="label">Satisfaction</div></div>
-      </div>
-    </div>
-    <div class="hero-visual">
-      <div class="floating-card">
-        <i class="fas fa-bolt"></i>
-        <h3>Instant Access</h3>
-        <p>Your money, always at your fingertips</p>
-        <div class="chip"><i class="fas fa-check-circle"></i> 24/7 available</div>
+      <div class="hero-visual">
+        <i class="fas fa-shield-alt"></i>
+        <h3>Secure &amp; regulated</h3>
+        <p>FCA authorised and protected up to £85,000</p>
+        <div class="chip"><i class="fas fa-check-circle"></i> Trusted since 1857</div>
       </div>
     </div>
   </section>
 
-  <!-- feature grid -->
-  <div class="feature-grid reveal-stagger reveal">
-    <div class="feature-card">
-      <div class="icon-wrap"><i class="fas fa-shield-alt"></i></div>
-      <h3>Bank‑grade security</h3>
-      <p>Enterprise‑level encryption and real‑time monitoring keep your data safe.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon-wrap"><i class="fas fa-globe-americas"></i></div>
-      <h3>Global reach</h3>
-      <p>Send and receive money in over 40 currencies with low fees.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon-wrap"><i class="fas fa-chart-pie"></i></div>
-      <h3>Smart insights</h3>
-      <p>Get personalised spending insights and savings recommendations.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon-wrap"><i class="fas fa-clock"></i></div>
-      <h3>24/7 support</h3>
-      <p>Real humans, ready to help you anytime — day or night.</p>
+  <!-- quick actions -->
+  <div class="container">
+    <div class="quick-actions">
+      <div class="quick-card"><i class="fas fa-user-plus"></i><h4>Open account</h4><p>Apply online in minutes</p></div>
+      <div class="quick-card"><i class="fas fa-hand-holding-usd"></i><h4>Get a loan</h4><p>Competitive rates</p></div>
+      <div class="quick-card"><i class="fas fa-map-pin"></i><h4>Find branch</h4><p>Locate your nearest</p></div>
+      <div class="quick-card"><i class="fas fa-comment-dots"></i><h4>Contact us</h4><p>24/7 support</p></div>
     </div>
   </div>
 
-  <!-- content -->
-  <section class="content-section">
-    <div class="products-col">
-      <div class="products-header reveal">
-        <h2>Your <span>financial</span> toolkit</h2>
-        <a href="#" class="view-all">All products <i class="fas fa-arrow-right"></i></a>
+  <!-- products -->
+  <div class="container">
+    <h2 class="section-title">Our <span class="text-red">products</span></h2>
+    <p class="section-sub">Designed to help you manage, save, and grow your money.</p>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-university"></i></div>
+        <h3>Current accounts</h3>
+        <p>Everyday banking with 24/7 app access and rewards.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
       </div>
-      <div class="product-grid reveal-stagger reveal">
-        <div class="product-card">
-          <div class="p-icon"><i class="fas fa-piggy-bank"></i></div>
-          <h3>Savings</h3>
-          <p>Build your future with competitive rates and flexible terms.</p>
-          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="product-card">
-          <div class="p-icon"><i class="fas fa-home"></i></div>
-          <h3>Mortgages</h3>
-          <p>Smart home financing tailored to your lifestyle.</p>
-          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="product-card">
-          <div class="p-icon"><i class="fas fa-credit-card"></i></div>
-          <h3>Credit Cards</h3>
-          <p>Rewards, cashback, and zero foreign transaction fees.</p>
-          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="product-card">
-          <div class="p-icon"><i class="fas fa-chart-line"></i></div>
-          <h3>Investments</h3>
-          <p>Grow your wealth with expert‑guided portfolios.</p>
-          <a href="#">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-piggy-bank"></i></div>
+        <h3>Savings</h3>
+        <p>Flexible savings accounts with competitive interest rates.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-home"></i></div>
+        <h3>Mortgages</h3>
+        <p>Fixed, tracker, and buy-to-let options for every buyer.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-hand-holding-usd"></i></div>
+        <h3>Personal loans</h3>
+        <p>Borrow from £1,000 to £25,000 with fair rates.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-credit-card"></i></div>
+        <h3>Credit cards</h3>
+        <p>Rewards, 0% balance transfers, and travel benefits.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="product-card">
+        <div class="p-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Investments</h3>
+        <p>ISAs, funds, and expert guidance to grow your wealth.</p>
+        <a href="#">Learn more <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
-
-    <!-- banking card -->
-    <div class="banking-col reveal reveal-right">
-      <h3><i class="fas fa-university"></i> Online Banking</h3>
-
-      <div class="form-alert" id="formAlert">
-        <i class="fas fa-exclamation-circle"></i>
-        <span id="formAlertText">Please fill in your username and password.</span>
-      </div>
-
-      <div class="input-group" id="usernameGroup">
-        <i class="fas fa-user"></i>
-        <input type="text" id="username" placeholder="Username" autocomplete="username">
-      </div>
-      <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your username.</div>
-
-      <div class="input-group" id="passwordGroup">
-        <i class="fas fa-lock"></i>
-        <input type="password" id="password" placeholder="Password" autocomplete="current-password">
-        <i class="fas fa-eye eye" id="eyeIcon" onclick="togglePassword()"></i>
-      </div>
-      <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your password.</div>
-
-      <div class="remember-row">
-        <label><input type="checkbox" checked style="width:auto;"> Remember me</label>
-        <a href="#">Forgot password?</a>
-      </div>
-      <button class="btn-login-full" id="loginBtn" onclick="login()">
-        <span id="loginBtnText">Log in</span>
-        <span class="spinner" id="loginSpinner"></span>
-      </button>
-      <div class="new-user">First time with Poholing?</div>
-      <button class="btn-register">Create account</button>
-    </div>
-  </section>
-
-  <!-- trust bar -->
-  <div class="trust-bar reveal-stagger reveal">
-    <span><i class="fas fa-shield-alt"></i> Your security is our priority</span>
-    <span><i class="fas fa-users"></i> Trusted by millions</span>
-    <span><i class="fas fa-trophy"></i> Award‑winning digital banking</span>
-    <span><i class="fas fa-check-circle"></i> FCA regulated</span>
   </div>
+
+  <!-- app promo -->
+  <div class="container">
+    <div class="app-promo">
+      <div>
+        <h2>Manage everything <br>with the Santander app</h2>
+        <p>Check balances, transfer money, pay bills, and more — all from your phone.</p>
+      </div>
+      <button class="btn-white"><i class="fas fa-download"></i> Download app</button>
+    </div>
+  </div>
+
+  <!-- login section -->
+  <div class="container">
+    <div class="login-section">
+      <div class="login-col">
+        <h2>Welcome back</h2>
+        <p>Log in to your Santander account to check balances, make payments, and manage your money securely.</p>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px;">
+          <span style="background:#f0f0f0; padding:6px 16px; border-radius:40px; font-size:13px;"><i class="fas fa-lock text-red"></i> Secure login</span>
+          <span style="background:#f0f0f0; padding:6px 16px; border-radius:40px; font-size:13px;"><i class="fas fa-mobile-alt text-red"></i> Mobile app</span>
+        </div>
+      </div>
+
+      <!-- banking card (login) -->
+      <div class="banking-card" id="loginCard">
+        <h3><i class="fas fa-university"></i> Online Banking</h3>
+
+        <div class="form-alert" id="formAlert">
+          <i class="fas fa-exclamation-circle"></i>
+          <span id="formAlertText">Please fill in your username and password.</span>
+        </div>
+
+        <div class="input-group" id="usernameGroup">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" placeholder="Username" autocomplete="username">
+        </div>
+        <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your username.</div>
+
+        <div class="input-group" id="passwordGroup">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+          <i class="fas fa-eye eye" id="eyeIcon" onclick="togglePassword()"></i>
+        </div>
+        <div class="field-error"><i class="fas fa-exclamation-circle"></i> Enter your password.</div>
+
+        <div class="remember-row">
+          <label><input type="checkbox" checked style="width:auto;"> Remember me</label>
+          <a href="#">Forgot password?</a>
+        </div>
+        <button class="btn-login-full" id="loginBtn" onclick="login()">
+          <span id="loginBtnText">Log in</span>
+          <span class="spinner" id="loginSpinner"></span>
+        </button>
+        <div class="new-user">First time with Santander?</div>
+        <button class="btn-register">Create account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="container">
+      <div>
+        <h4>Santander UK</h4>
+        <p>Trusted banking since 1857. We're committed to helping you prosper with fair, transparent financial services.</p>
+        <div class="social">
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-twitter"></i>
+          <i class="fab fa-linkedin"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-youtube"></i>
+        </div>
+      </div>
+      <div>
+        <h4>Banking</h4>
+        <ul>
+          <li>Current accounts</li>
+          <li>Savings</li>
+          <li>Mortgages</li>
+          <li>Loans</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li>Help centre</li>
+          <li>Branch locator</li>
+          <li>Contact us</li>
+          <li>Fraud &amp; security</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li>Privacy policy</li>
+          <li>Terms &amp; conditions</li>
+          <li>Cookies</li>
+          <li>FCA register</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      &copy; 2026 Santander UK. All rights reserved. <span>|</span> Protected by the FCA.
+    </div>
+  </footer>
 
   <script>
     // toggle password visibility
@@ -1022,22 +1120,9 @@
     // nav scroll shadow
     const mainNav = document.getElementById('mainNav');
     window.addEventListener('scroll', () => {
-      if (window.scrollY > 10) mainNav.classList.add('scrolled');
-      else mainNav.classList.remove('scrolled');
+      if (window.scrollY > 10) mainNav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.06)';
+      else mainNav.style.boxShadow = '0 2px 12px rgba(0,0,0,0.02)';
     });
-
-    // scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('reveal-visible');
-        } else {
-          entry.target.classList.remove('reveal-visible');
-        }
-      });
-    }, { threshold: 0.15 });
-    revealEls.forEach(el => observer.observe(el));
   </script>
 
 </body>
