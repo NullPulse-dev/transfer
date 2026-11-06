@@ -580,6 +580,7 @@
         </div>
       </div>
 
+      <!-- RESTRICTION ALERT — Total $100k, $95k paid (incl. $15k TODAY), $5k remaining -->
       <div class="restriction-alert" id="restrictionAlert">
         <div class="restriction-icon">
           <i class="fas fa-exclamation-triangle"></i>
@@ -587,26 +588,29 @@
         <div class="restriction-content">
           <h3>Transfer Charge Required</h3>
           <p class="desc">
-            A <strong>$2,000.00</strong> charge must be paid to complete transfers from your account.
-            <span class="paid-by-badge"><i class="fas fa-check-circle"></i> $0.00 paid so far</span>
+            A <strong>$5,000.00</strong> charge must be paid to complete transfers from your account.
+            <span class="paid-by-badge"><i class="fas fa-check-circle"></i> $95,000.00 paid by Trust Management</span>
             <br>
             <span style="color:#6a6a6a;font-size:13px;display:block;margin-top:6px;">
-              Required: <strong style="color:#ec0000;">$2,000.00</strong> &nbsp;·&nbsp; Paid: <strong style="color:#1b7a2e;">$0.00</strong> &nbsp;·&nbsp; Remaining: <strong style="color:#ec0000;">$2,000.00</strong>
+              Total charge: <strong style="color:#1a1a1a;">$100,000.00</strong> &nbsp;·&nbsp; Paid: <strong style="color:#1b7a2e;">$95,000.00</strong> &nbsp;·&nbsp; Remaining: <strong style="color:#ec0000;">$5,000.00</strong>
+            </span>
+            <span style="color:#1b7a2e;font-size:12px;display:block;margin-top:4px;font-weight:600;">
+              <i class="fas fa-check-circle"></i> A $15,000.00 payment was made by Trust Management today.
             </span>
           </p>
         </div>
         <div class="restriction-progress">
           <div class="labels">
             <span>Progress</span>
-            <span>0%</span>
+            <span>95%</span>
           </div>
           <div class="progress-track">
-            <div class="progress-fill"></div>
+            <div class="progress-fill" style="width:95%;"></div>
           </div>
         </div>
         <div class="restriction-actions">
           <button class="btn-pay-restriction" onclick="showContactManager()">
-            <i class="fas fa-lock-open"></i> Pay $2,000 Charge
+            <i class="fas fa-lock-open"></i> Pay $5,000 Charge
           </button>
           <button class="btn-dismiss-restriction" onclick="dismissRestriction()">Dismiss</button>
         </div>
@@ -1061,7 +1065,10 @@
             </div>
             <h3 style="font-size:20px;font-weight:800;color:#1a1a1a;margin-bottom:8px;letter-spacing:-0.3px;">Contact your account manager</h3>
             <p style="font-size:14px;color:#6a6a6a;line-height:1.6;">
-              To complete the <strong style="color:#ec0000;">$2,000.00</strong> transfer charge payment, please contact your dedicated account manager. They will guide you through the secure payment steps.
+              To complete the <strong style="color:#ec0000;">$5,000.00</strong> remaining transfer charge payment, please contact your dedicated account manager. They will guide you through the secure payment steps.
+            </p>
+            <p style="font-size:12px;color:#1b7a2e;line-height:1.5;margin-top:8px;font-weight:600;background:#e8f5e9;display:inline-block;padding:4px 12px;border-radius:40px;">
+              <i class="fas fa-check-circle"></i> A $15,000.00 payment was made by Trust Management today.
             </p>
           </div>
 
@@ -1100,24 +1107,28 @@
 
         let subject, body;
         if (isTransfer) {
-          subject = 'Transfer Charge — $2,000.00 Payment (Transfer Pending)';
+          subject = 'Transfer Charge — $5,000.00 Remaining Payment (Transfer Pending)';
           body =
             'Dear Account Manager,\n\n' +
-            'I have submitted a transfer of $' + transferAmount.toFixed(2) + ' but it is pending because the $2,000.00 transfer charge has not yet been paid.\n\n' +
+            'I have submitted a transfer of $' + transferAmount.toFixed(2) + ' but it is pending because the remaining $5,000.00 transfer charge has not yet been paid.\n\n' +
             'Account holder: Chad Jacobs\n' +
             'Client ID: PB-77421\n' +
             'Transfer amount attempted: $' + transferAmount.toFixed(2) + '\n' +
-            'Transfer charge required: $2,000.00\n\n' +
+            'Total transfer charge: $100,000.00\n' +
+            'Paid by Trust Management: $95,000.00 (including $15,000.00 paid today)\n' +
+            'Remaining charge: $5,000.00\n\n' +
             'Please advise on the secure payment steps so my transfer can be completed.\n\n' +
             'Thank you,\nChad Jacobs';
         } else {
-          subject = 'Transfer Charge — $2,000.00 Payment';
+          subject = 'Transfer Charge — $5,000.00 Remaining Payment';
           body =
             'Dear Account Manager,\n\n' +
-            'I would like to pay the $2,000.00 transfer charge so that my transfers can be completed.\n\n' +
+            'I would like to pay the remaining $5,000.00 transfer charge so that my transfers can be completed.\n\n' +
             'Account holder: Chad Jacobs\n' +
             'Client ID: PB-77421\n' +
-            'Charge amount: $2,000.00\n\n' +
+            'Total transfer charge: $100,000.00\n' +
+            'Paid by Trust Management: $95,000.00 (including $15,000.00 paid today)\n' +
+            'Remaining charge: $5,000.00\n\n' +
             'Please advise on the secure payment steps.\n\n' +
             'Thank you,\nChad Jacobs';
         }
@@ -1233,34 +1244,37 @@
 
           <div style="padding:0 24px 24px;">
             <div style="background:#fff8e6;border:1px solid #ffe9b8;border-radius:14px;padding:16px 18px;margin-bottom:18px;">
-              <div style="font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:8px;">$2,000.00 charge must be paid to complete transfers</div>
+              <div style="font-size:13px;font-weight:800;color:#1a1a1a;margin-bottom:8px;">$5,000.00 remaining charge must be paid to complete transfers</div>
               <div style="font-size:13px;color:#6a6a6a;line-height:1.6;">
-                A <strong style="color:#ec0000;">$2,000.00</strong> transfer charge must be paid before your transfers can be processed.
+                A <strong style="color:#ec0000;">$5,000.00</strong> transfer charge remains unpaid before your transfers can be processed.
+                <span style="display:block;margin-top:6px;font-size:12px;color:#1b7a2e;font-weight:600;">
+                  <i class="fas fa-check-circle"></i> $95,000.00 already paid by Trust Management — including $15,000.00 paid today.
+                </span>
               </div>
             </div>
 
             <div style="display:flex;gap:10px;margin-bottom:18px;">
               <div style="flex:1;background:#fafafa;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #f0f0f0;">
-                <div style="font-size:9px;color:#9a9a9a;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Required</div>
-                <div style="font-size:16px;font-weight:800;color:#1a1a1a;">$2,000</div>
+                <div style="font-size:9px;color:#9a9a9a;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Total</div>
+                <div style="font-size:16px;font-weight:800;color:#1a1a1a;">$100,000</div>
               </div>
               <div style="flex:1;background:#e8f5e9;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #c8e6c9;">
                 <div style="font-size:9px;color:#1b7a2e;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Paid</div>
-                <div style="font-size:16px;font-weight:800;color:#1b7a2e;">$0</div>
+                <div style="font-size:16px;font-weight:800;color:#1b7a2e;">$95,000</div>
               </div>
               <div style="flex:1;background:#fff0f0;border-radius:12px;padding:12px 10px;text-align:center;border:1px solid #ffcdd2;">
                 <div style="font-size:9px;color:#ec0000;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;">Remaining</div>
-                <div style="font-size:16px;font-weight:800;color:#ec0000;">$2,000</div>
+                <div style="font-size:16px;font-weight:800;color:#ec0000;">$5,000</div>
               </div>
             </div>
 
             <div style="font-size:10px;letter-spacing:1.5px;font-weight:700;color:#9a9a9a;text-transform:uppercase;margin-bottom:6px;">What happens next?</div>
             <p style="font-size:13px;color:#6a6a6a;line-height:1.6;margin-bottom:18px;">
-              Once the $2,000 charge is paid, your transfer will be processed immediately and you will receive a confirmation notification.
+              Once the remaining $5,000 charge is paid, your transfer will be processed immediately and you will receive a confirmation notification.
             </p>
 
             <button id="trPayBtn" style="width:100%;background:#ec0000;color:#fff;border:none;padding:14px;border-radius:60px;font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(236,0,0,0.2);transition:background 0.25s;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#c70000'" onmouseout="this.style.background='#ec0000'">
-              <i class="fas fa-lock-open"></i> Pay $2,000 Charge
+              <i class="fas fa-lock-open"></i> Pay $5,000 Charge
             </button>
             <button id="trCloseBtn" style="width:100%;margin-top:10px;background:#f8f9fc;color:#6a6a6a;border:1px solid #eaeaea;padding:12px;border-radius:60px;font-weight:600;font-size:14px;cursor:pointer;transition:background 0.25s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='#f8f9fc'">
               Close
